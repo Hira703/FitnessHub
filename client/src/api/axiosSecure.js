@@ -2,7 +2,7 @@ import axios from "axios";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const axiosSecure = axios.create({
-  baseURL:"http://localhost:5000",
+  baseURL:"https://server-murex-rho-32.vercel.app",
 });
 
 // Helper to get fresh token
