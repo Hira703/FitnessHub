@@ -42,7 +42,7 @@ const TrainerDetails = () => {
     queryKey: ["slots", trainer?.email],
     queryFn: async () => {
       const res = await axiosSecure.get(`/api/slots/trainer/email`, {
-        params: { email: trainer.email, isBooked: false },
+        params: { email: trainer.email },
       });
       return res.data;
     },
@@ -65,7 +65,7 @@ const TrainerDetails = () => {
     });
   };
 
-  if (loadingTrainer || !trainer) {
+  if (loadingTrainer || !trainer||loadingSlots) {
     return (
       <div className="flex items-center justify-center min-h-screen text-gray-600 font-semibold">
         Loading trainer details...
@@ -133,77 +133,93 @@ const TrainerDetails = () => {
 
       {/* Available Slots */}
       <section className="mt-14 bg-white rounded-xl shadow-lg p-8 border border-gray-200">
-        <h3
-          className="text-3xl font-bold mb-8 text-indigo-700 tracking-wide"
-          style={{ color: COLORS[0] }}
-        >
-          Available Slots
-        </h3>
+  <h3
+    className="text-3xl font-bold mb-8 text-indigo-700 tracking-wide"
+    style={{ color: COLORS[0] }}
+  >
+    Available Slots
+  </h3>
 
-        {availableSlots.length === 0 ? (
-          <p className="text-center text-gray-500 italic text-lg">
-            No available slots at the moment. Please check back later.
-          </p>
-        ) : (
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {availableSlots.map((slot) => (
-              <div
-                key={slot._id}
-                className="border rounded-xl p-6 flex flex-col justify-between cursor-pointer shadow-sm hover:shadow-lg transition duration-300 border-yellow-400"
-                role="button"
-                tabIndex={0}
-                onClick={() => handleBookSlot(slot)}
-                onKeyDown={(e) => { if (e.key === "Enter") handleBookSlot(slot) }}
-                aria-label={`Book slot ${slot.slotName} at ${slot.slotTime}`}
-              >
-                <div>
-                  <h4 className="text-2xl font-semibold text-indigo-900 mb-2">
-                    {slot.slotName}
-                  </h4>
-                  <p className="text-yellow-600 font-semibold mb-4 text-lg">
-                    Time: {slot.slotTime}
-                  </p>
-                </div>
+  {availableSlots.length === 0 ? (
+    <p className="text-center text-gray-500 italic text-lg">
+      No available slots at the moment. Please check back later.
+    </p>
+  ) : (
+    <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      {availableSlots.map((slot) => {
+        const isBooked = slot.isBooked; 
 
-                <div>
-                  <h5 className="text-indigo-700 font-semibold mb-3 text-lg">
-                    Days
-                  </h5>
-                  <div className="flex flex-wrap gap-3">
-                    {slot.days.map((day) => (
-                      <span
-                        key={day}
-                        className="flex items-center gap-2 px-4 py-1 rounded-full text-white font-semibold select-none"
-                        style={{
-                          backgroundColor:
-                            day === "Sunday" || day === "Saturday"
-                              ? COLORS[3]
-                              : COLORS[2],
-                          boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
-                        }}
-                      >
-                        <span className="text-lg">{dayIcons[day] || "📅"}</span> {day}
-                      </span>
-                    ))}
-                  </div>
-                </div>
+        return (
+          <div
+            key={slot._id}
+            className={`border rounded-xl p-6 flex flex-col justify-between shadow-sm transition duration-300 border-yellow-400 ${
+              isBooked ? 'bg-gray-100 opacity-70 cursor-not-allowed' : 'hover:shadow-lg cursor-pointer'
+            }`}
+            role="button"
+            tabIndex={0}
+            onClick={() => {
+              if (!isBooked) handleBookSlot(slot);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !isBooked) handleBookSlot(slot);
+            }}
+            aria-label={`Slot ${slot.slotName} at ${slot.slotTime}`}
+          >
+            <div>
+              <h4 className="text-2xl font-semibold text-indigo-900 mb-2">
+                {slot.slotName}
+              </h4>
+              <p className="text-yellow-600 font-semibold mb-4 text-lg">
+                Time: {slot.slotTime}
+              </p>
+            </div>
 
-                <button
-                  type="button"
-                  className="mt-6 w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-lg shadow-md transition"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleBookSlot(slot);
-                  }}
-                  aria-label={`Book slot ${slot.slotName} at ${slot.slotTime}`}
-                >
-                  Book This Slot
-                </button>
+            <div>
+              <h5 className="text-indigo-700 font-semibold mb-3 text-lg">
+                Days
+              </h5>
+              <div className="flex flex-wrap gap-3">
+                {slot.days.map((day) => (
+                  <span
+                    key={day}
+                    className="flex items-center gap-2 px-4 py-1 rounded-full text-white font-semibold select-none"
+                    style={{
+                      backgroundColor:
+                        day === "Sunday" || day === "Saturday"
+                          ? COLORS[3]
+                          : COLORS[2],
+                      boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
+                    }}
+                  >
+                    <span className="text-lg">{dayIcons[day] || "📅"}</span> {day}
+                  </span>
+                ))}
               </div>
-            ))}
+            </div>
+
+            <button
+              type="button"
+              className={`mt-6 w-full font-bold py-3 rounded-lg shadow-md transition ${
+                isBooked
+                  ? 'bg-gray-400 text-white cursor-not-allowed'
+                  : 'bg-indigo-600 hover:bg-indigo-700 text-white'
+              }`}
+              onClick={(e) => {
+                e.stopPropagation();
+                if (!isBooked) handleBookSlot(slot);
+              }}
+              disabled={isBooked}
+              aria-label={isBooked ? 'Slot already booked' : `Book slot ${slot.slotName} at ${slot.slotTime}`}
+            >
+              {isBooked ? "Already Booked" : "Book This Slot"}
+            </button>
           </div>
-        )}
-      </section>
+        );
+      })}
+    </div>
+  )}
+</section>
+
     </main>
   );
 };
