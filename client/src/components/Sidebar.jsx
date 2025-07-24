@@ -39,7 +39,6 @@ const Sidebar = () => {
     logoutUser();
     navigate("/login");
   };
-  console.log(backendUser.role);
 
   const toggleSidebar = () => setIsOpen((prev) => !prev);
 
@@ -85,7 +84,7 @@ const Sidebar = () => {
         <button
           aria-label={isOpen ? "Close sidebar" : "Open sidebar"}
           onClick={toggleSidebar}
-          className="text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
+          className="text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded p-2 mr-4"
         >
           {isOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
         </button>

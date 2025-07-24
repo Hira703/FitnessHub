@@ -270,7 +270,7 @@ export default function Navbar() {
             All Classes
           </NavLink>
           <NavLink
-            to="/community"
+            to="/forums"
             onClick={() => setIsOpen(false)}
             className={({ isActive }) =>
               isActive

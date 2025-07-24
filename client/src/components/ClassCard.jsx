@@ -34,7 +34,7 @@ const ClassCard = ({ classItem }) => {
 
   return (
     <div
-      className="bg-white dark:bg-gray-900 shadow-lg rounded-3xl overflow-hidden cursor-pointer transform transition duration-300 hover:scale-105 hover:shadow-2xl"
+      className="bg-white shadow-lg rounded-3xl overflow-hidden cursor-pointer transform transition duration-300 hover:scale-105 hover:shadow-2xl"
       style={{ borderTop: `6px solid ${COLORS[0]}` }}
       onClick={handleViewDetails}
       role="button"
@@ -64,12 +64,12 @@ const ClassCard = ({ classItem }) => {
       {/* Details Section */}
       <div className="p-5 space-y-3">
         {/* Description */}
-        <p className="text-gray-700 dark:text-gray-300 text-sm line-clamp-3">
+        <p className="text-gray-700 text-sm line-clamp-3">
           {details}
         </p>
 
         {/* Info Grid */}
-        <div className="grid grid-cols-2 gap-3 text-sm text-gray-600 dark:text-gray-400 mt-3">
+        <div className="grid grid-cols-2 gap-3 text-sm text-gray-600 mt-3">
           <div className="flex items-center gap-2">
             <FaClock style={{ color: COLORS[0] }} />
             <span>{duration} hrs</span>
@@ -103,14 +103,14 @@ const ClassCard = ({ classItem }) => {
 
         {/* Equipment Info (Optional) */}
         {equipmentNeeded?.length > 0 && (
-          <p className="text-xs text-gray-500 dark:text-gray-400 mt-3">
+          <p className="text-xs text-gray-500 mt-3">
             <strong>Equipment:</strong> {equipmentNeeded.join(', ')}
           </p>
         )}
 
         {/* Footer Section */}
         <div className="mt-5 flex justify-between items-center">
-          <span className="text-sm text-gray-500 dark:text-gray-400 font-semibold">
+          <span className="text-sm text-gray-500 font-semibold">
             Bookings: {bookingCount}
           </span>
 

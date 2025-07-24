@@ -4,8 +4,8 @@ import axiosSecure from "../../api/axiosSecure";
 import { AuthContext } from "../../context/AuthProvider";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 import { ImSpinner2 } from "react-icons/im";
-
 import Swal from "sweetalert2";
+
 const fetchForums = async (page) => {
   const res = await axiosSecure.get(`/api/forums?page=${page}&limit=6`);
   return res.data;
@@ -31,8 +31,6 @@ const ForumPage = () => {
   const forums = data?.forums || [];
   const pages = data?.pagination?.pages || 1;
 
-  
-
   const handleVote = async (forumId, voteType) => {
     if (!backendUser) {
       Swal.fire({
@@ -42,13 +40,13 @@ const ForumPage = () => {
       });
       return;
     }
-  
+
     setVoting(true);
     try {
       const res = await axiosSecure.patch(`/api/forums/${forumId}/vote`, {
         voteType,
       });
-  
+
       Swal.fire({
         icon: "success",
         title: "Thank you!",
@@ -56,10 +54,9 @@ const ForumPage = () => {
         timer: 1500,
         showConfirmButton: false,
       });
-  
-      refetch(); // Refresh forum data to update UI
+
+      refetch();
     } catch (error) {
-      // Check if it's a duplicate voting error from backend
       const message = error.response?.data?.message || "Failed to submit vote.";
       if (message === "You have already voted on this post") {
         Swal.fire({
@@ -78,11 +75,10 @@ const ForumPage = () => {
       setVoting(false);
     }
   };
-  
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-12">
-      <h1 className="text-4xl font-bold text-center mb-12 text-[#1D4ED8] dark:text-[#93C5FD]">
+      <h1 className="text-4xl font-bold text-center mb-12 text-[#1D4ED8]">
         💬 Community Forums
       </h1>
 
@@ -93,7 +89,7 @@ const ForumPage = () => {
       ) : isError ? (
         <p className="text-red-500 text-center">{error.message}</p>
       ) : forums.length === 0 ? (
-        <p className="text-center text-gray-500 dark:text-gray-400">
+        <p className="text-center text-gray-500">
           No forum posts yet.
         </p>
       ) : (
@@ -101,10 +97,10 @@ const ForumPage = () => {
           {forums.map((forum) => (
             <div
               key={forum._id}
-              className="bg-white dark:bg-gray-900 p-6 rounded-xl shadow-md border border-[#E0E7FF] dark:border-[#1E3A8A]/30 transition hover:shadow-lg"
+              className="bg-white p-6 rounded-xl shadow-md border border-[#E0E7FF] transition hover:shadow-lg"
             >
               <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-2">
-                <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">
+                <h2 className="text-2xl font-semibold text-gray-900">
                   {forum.title}
                 </h2>
                 <span
@@ -118,7 +114,7 @@ const ForumPage = () => {
                 </span>
               </div>
 
-              <p className="mt-3 text-gray-700 dark:text-gray-300 leading-relaxed">
+              <p className="mt-3 text-gray-700 leading-relaxed">
                 {forum.content}
               </p>
 
@@ -137,9 +133,9 @@ const ForumPage = () => {
                 >
                   <FaArrowDown className="text-lg" /> {forum.votes?.down || 0}
                 </button>
-                <span className="text-sm text-gray-500 dark:text-gray-400">
+                <span className="text-sm text-gray-500">
                   Posted by{" "}
-                  <span className="font-medium text-[#1E3A8A] dark:text-[#93C5FD]">
+                  <span className="font-medium text-[#1E3A8A]">
                     {forum.author.name}
                   </span>
                 </span>
@@ -149,7 +145,6 @@ const ForumPage = () => {
         </div>
       )}
 
-      {/* Pagination */}
       {!isLoading && pages > 1 && (
         <div className="flex justify-center items-center gap-6 mt-12">
           <button
@@ -159,7 +154,7 @@ const ForumPage = () => {
           >
             Previous
           </button>
-          <span className="text-gray-800 dark:text-gray-300 font-medium">
+          <span className="text-gray-800 font-medium">
             Page {page} of {pages}
           </span>
           <button

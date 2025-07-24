@@ -42,9 +42,9 @@ const TrainerBookedPage = () => {
     enabled: !!slot,
   });
 
-  const trainer = trainerData?.trainer || null;
+  const trainer = trainerData?.trainer || [];
   const classes = trainerData?.classes || [];
-  const slotInfo = slotInfoData || null;
+  const slotInfo = slotInfoData || [];
 
   const packages = [
     {
@@ -151,22 +151,22 @@ const TrainerBookedPage = () => {
     });
   };
 
-  if (loadingTrainer) {
+  if (loadingTrainer||loadingSlot) {
     return (
       <div className="text-center py-20 text-lg font-semibold">
-        Loading booking details...
+        Loading  details...
       </div>
     );
   }
 
-  if (trainerError) {
+  if (trainerError||slotError) {
     return (
       <div className="text-center py-20 text-lg font-semibold text-red-600">
         Error loading trainer data.
       </div>
     );
   }
-
+   
   return (
     <div className="max-w-6xl mx-auto px-4 py-10 space-y-10">
       {/* Trainer and Slot Info */}
