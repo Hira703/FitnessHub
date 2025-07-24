@@ -30,6 +30,7 @@ import Trainers from "../pages/dashboard/admin/Trainers";
 import AdminBalancePage from "../pages/dashboard/admin/AdminBalancePage";
 import AllSubscribers from "../pages/dashboard/admin/AllSubscribers";
 import Login from "../pages/auth/Login";
+import ManageClasses from "../pages/dashboard/admin/ManageClasses";
 
 
 const router = createBrowserRouter([
@@ -139,6 +140,10 @@ const router = createBrowserRouter([
                     {
                         path: "subscribers",
                         element: <AllSubscribers></AllSubscribers>
+                    },
+                    {
+                        path:"manage-classes",
+                        element:<ManageClasses></ManageClasses>
                     }
 
                 ]

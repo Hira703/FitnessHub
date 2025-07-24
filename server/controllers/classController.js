@@ -47,11 +47,11 @@ const createClass = async (req, res) => {
   
       const savedClass = await newClass.save();
   
-      // Update each matched trainer's classes array with this new class ID
-      await Trainer.updateMany(
-        { _id: { $in: trainerIds } },
-        { $addToSet: { classes: savedClass._id } }
-      );
+      // // Update each matched trainer's classes array with this new class ID
+      // await Trainer.updateMany(
+      //   { _id: { $in: trainerIds } },
+      //   { $addToSet: { classes: savedClass._id } }
+      // );
   
       res.status(201).json({
         message: 'Class created successfully with trainers assigned',
@@ -145,11 +145,29 @@ const getClassById = async (req, res) => {
     res.status(500).json({ error: 'Server error while fetching class details' });
   }
 };
+const deleteClass = async (req, res) => {
+  try {
+    const classId = req.params.id;
+
+    const deleted = await Class.findByIdAndDelete(classId);
+
+    if (!deleted) {
+      return res.status(404).json({ message: 'Class not found' });
+    }
+
+    return res.json({ message: 'Class deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting class:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
 
   
 
 module.exports = {
   createClass,
   getAllClasses,
-  getClassById
+  getClassById,
+  deleteClass
 };

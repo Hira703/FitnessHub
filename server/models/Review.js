@@ -23,6 +23,11 @@ const reviewSchema = new mongoose.Schema(
       trim: true,
       default: "",
     },
+    memberEmail: {
+      type: String,
+      required: true,
+    }
+    
   },
   { timestamps: true } 
 );

@@ -118,7 +118,7 @@ exports.getSlotsByTrainerAndClass = async (req, res) => {
   }
 };
 
-// ✅ Delete a slot
+//  Delete a slot
 exports.deleteSlot = async (req, res) => {
   const { id } = req.params;
   try {
@@ -133,30 +133,6 @@ exports.deleteSlot = async (req, res) => {
   }
 };
 
-// ✅ Update booking status
-// exports.updateBookingStatus = async (req, res) => {
-//   const { id } = req.params;
-//   const { isBooked, bookedBy } = req.body;
-
-//   try {
-//     const updated = await Slot.findByIdAndUpdate(
-//       id,
-//       {
-//         isBooked,
-//         bookedBy: isBooked ? bookedBy : null,
-//       },
-//       { new: true }
-//     );
-
-//     if (!updated) {
-//       return res.status(404).json({ message: "Slot not found" });
-//     }
-
-//     res.status(200).json(updated);
-//   } catch (error) {
-//     res.status(500).json({ message: "Failed to update booking", error: error.message });
-//   }
-// };
 exports.getSlotById = async (req, res) => {
   try {
     const { id } = req.params;
@@ -185,7 +161,7 @@ exports.bookSlotById = async (req, res) => {
       return res.status(404).json({ message: "Slot not found" });
     }
 
-    // 🔒 Prevent double booking
+    //  Prevent double booking
     if (slot.isBooked) {
       return res.status(400).json({ message: "This slot is already booked." });
     }

@@ -3,7 +3,7 @@ const Review = require("../models/Review");
 // Create a new review
 exports.createReview = async (req, res) => {
     try {
-      const { trainerId, memberId, rating, comment } = req.body;
+      const { trainerId, memberId, rating, comment, memberEmail } = req.body;
   
       if (!trainerId || !memberId || !rating) {
         return res.status(400).json({ message: "Missing required fields." });
@@ -20,6 +20,7 @@ exports.createReview = async (req, res) => {
         memberId,
         rating,
         comment,
+        memberEmail
       });
   
       await newReview.save();

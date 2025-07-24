@@ -1,14 +1,16 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Modal from "react-modal";
 import { FaStar } from "react-icons/fa";
 import Swal from "sweetalert2";
 import axiosSecure from "../api/axiosSecure";
+import { AuthContext } from "../context/AuthProvider";
 
 const ReviewModal = ({ isOpen, onClose, trainerId, memberId, onReviewSubmitted }) => {
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(null);
   const [comment, setComment] = useState("");
   const [loading, setLoading] = useState(false);
+  const {backendUser}=useContext(AuthContext);
 
   const resetForm = () => {
     setRating(0);
@@ -30,6 +32,7 @@ const ReviewModal = ({ isOpen, onClose, trainerId, memberId, onReviewSubmitted }
         memberId,
         rating,
         comment,
+        memberEmail: backendUser.email
       });
 
       Swal.fire("Success!", "Review submitted successfully!", "success");

@@ -64,7 +64,7 @@ const Sidebar = () => {
       ? [
           { to: "/dashboard/admin", label: "Admin Dashboard", icon: <FaUserShield /> },
           { to: "/dashboard/admin/applied-trainers", label: "Applied Trainers", icon: <FaUserCheck /> },
-          { to: "/dashboard/manage-classes", label: "Manage Classes", icon: <FaChalkboard /> },
+          { to: "/dashboard/admin/manage-classes", label: "Manage Classes", icon: <FaChalkboard /> },
           { to: "/dashboard/admin/create-class", label: "Create Class", icon: <FaPlus /> },
           { to: "/dashboard/admin/add-forum", label: "Add Forum", icon: <FaComments /> },
           { to: "/dashboard/admin/trainers", label: "All Trainers", icon: <FaChalkboardTeacher /> },

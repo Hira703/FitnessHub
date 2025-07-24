@@ -2,7 +2,7 @@
 import axios from "axios";
 
 const axiosPublic = axios.create({
-  baseURL: "https://server-murex-rho-32.vercel.app", // Replace with your backend URL
+  baseURL: "http://localhost:5000", 
 });
 
 export default axiosPublic;

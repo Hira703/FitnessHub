@@ -2,6 +2,9 @@ const User = require("../models/User");
 const Trainer = require('../models/Trainer');
 const Payment = require('../models/Payment');
 const Class = require('../models/Class');
+const Review = require('../models/Review');
+const Forum = require('../models/Forum');
+const Slot = require('../models/Slot');
 
 const NewsletterSubscriber = require('../models/NewsletterSubscriber');
 
@@ -178,5 +181,37 @@ exports.getAdminOverview = async (req, res) => {
   } catch (error) {
     console.error('Admin overview fetch error:', error);
     res.status(500).json({ message: 'Failed to fetch overview data' });
+  }
+};
+exports.getMemberStatsByEmail = async (req, res) => {
+  try {
+    const userEmail = req.params.email;
+
+    // Total classes booked
+    const totalBookedClasses = await Payment.countDocuments({ userEmail });
+
+    // Total unique trainers booked
+    const uniqueTrainerIds = await Payment.distinct('trainerId', { userEmail });
+    const totalBookedTrainers = uniqueTrainerIds.length;
+
+    // Total payment
+    const paymentData = await Payment.aggregate([
+      { $match: { userEmail } },
+      { $group: { _id: null, totalPayment: { $sum: '$price' } } },
+    ]);
+    const totalPayment = paymentData[0]?.totalPayment || 0;
+
+    //  Total reviews given by the member
+    const totalReviews = await Review.countDocuments({ memberEmail: userEmail });
+
+    res.status(200).json({
+      totalBookedClasses,
+      totalBookedTrainers,
+      totalPayment,
+      totalReviews,
+    });
+  } catch (err) {
+    console.error('Failed to fetch member stats', err);
+    res.status(500).json({ message: 'Server error while getting member stats' });
   }
 };
