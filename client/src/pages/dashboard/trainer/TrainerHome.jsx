@@ -1,11 +1,18 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useContext } from "react";
 import {
   FaChalkboardTeacher,
   FaPlusCircle,
   FaTasks,
   FaComments,
+  FaUserGraduate,
+  FaUsers,
+  FaClock,
+  FaDollarSign,
 } from "react-icons/fa";
+import { useQuery } from "@tanstack/react-query";
+import { AuthContext } from "../../../context/AuthProvider";
+import axiosSecure from "../../../api/axiosSecure";
+import { Link } from "react-router-dom";
 
 const COLORS = ["#1D4ED8", "#10B981", "#F59E0B", "#EF4444"];
 
@@ -41,59 +48,139 @@ const trainerRoutes = [
 ];
 
 const TrainerHome = () => {
+  const { backendUser } = useContext(AuthContext);
+  const trainerEmail = backendUser?.email;
+
+  const {
+    data: trainerStats,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ["trainerStats", trainerEmail],
+    enabled: !!trainerEmail,
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/api/users/stats/trainer?email=${trainerEmail}`);
+      return res.data;
+    },
+  });
+
+  if (isLoading) return <div className="text-center py-8">Loading...</div>;
+  if (isError) return <div className="text-center text-red-500 py-8">{error.message}</div>;
+  // console.log(trainerStats);
+
   return (
     <main className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-green-50 flex flex-col items-center py-10 px-4 sm:px-8 md:py-14">
-      {/* Welcome Card */}
-      <section className="max-w-4xl w-full mb-14 bg-white rounded-3xl shadow-2xl p-8 sm:p-10 flex flex-col md:flex-row items-center gap-8 md:gap-10">
-        <div className="flex-1 text-center md:text-left">
-          <h1
-            className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4 tracking-wide text-indigo-700"
-            style={{ color: COLORS[0] }}
-          >
-            Welcome Back, Trainer!
-          </h1>
-          <p className="text-base sm:text-lg text-gray-700 max-w-md mx-auto md:mx-0">
-            Manage your slots, add new sessions, and engage with the community — all from your personalized dashboard.
-          </p>
-        </div>
-        <div className="flex-1 flex justify-center md:justify-end max-w-xs sm:max-w-sm mx-auto md:mx-0">
-          {/* Illustration Placeholder */}
-          <div className="w-40 h-40 sm:w-48 sm:h-48 bg-indigo-100 rounded-full flex items-center justify-center shadow-lg">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-20 w-20 sm:h-24 sm:w-24 text-indigo-400"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={1.5}
-              aria-hidden="true"
-              focusable="false"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M12 14l9-5-9-5-9 5 9 5z"
-              />
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M12 14l6.16-3.422a12.083 12.083 0 01.84 4.265c0 3.866-3.582 7-8 7s-8-3.134-8-7a12.083 12.083 0 01.84-4.265L12 14z"
-              />
-            </svg>
-          </div>
-        </div>
-      </section>
+      {/* Welcome & Profile Card */}
+      <section className="max-w-5xl w-full mb-16 bg-white rounded-3xl shadow-2xl px-4 py-8 sm:px-8 sm:py-10 flex flex-col md:flex-row items-center gap-10 md:gap-20">
+  {/* Profile Picture & Info */}
+  <div className="flex-shrink-0 rounded-full overflow-hidden w-32 h-32 sm:w-36 sm:h-36 md:w-40 md:h-40 shadow-lg border-4 border-indigo-300">
+    <img
+      src={
+        trainerStats?.trainer.profileImageUrl ||
+        "/default-profile.png"
+      }
+      alt={trainerStats?.trainer.fullName || "Trainer"}
+      className="object-cover w-full h-full"
+    />
+  </div>
+
+  {/* Text Welcome */}
+  <div className="flex-1 text-center md:text-left">
+    <h1
+      className="text-2xl sm:text-3xl md:text-4xl font-extrabold mb-3 tracking-wide text-indigo-700"
+      style={{ color: COLORS[0] }}
+    >
+      Welcome Back, {trainerStats?.trainer.fullName || "Trainer"}!
+    </h1>
+    <p className="text-base sm:text-lg text-gray-700 max-w-md mx-auto md:mx-0">
+      Manage your slots, add new sessions, and engage with the community — all from your personalized dashboard.
+    </p>
+
+    {/* Extra Trainer Info */}
+    <div className="mt-6 flex flex-wrap gap-4 justify-center md:justify-start text-gray-600 font-medium text-sm sm:text-base">
+      <div className="flex items-center gap-2">
+        <FaUserGraduate className="text-indigo-500" />
+        <span>{trainerStats?.trainer.yearsOfExperience || 0} years experience</span>
+      </div>
+      <div className="flex items-center gap-2">
+        <FaClock className="text-green-500" />
+        <span>{trainerStats?.trainer.availableDays?.join(", ") || "N/A"}</span>
+      </div>
+      <div className="flex items-center gap-2">
+        <FaTasks className="text-yellow-500" />
+        <span>{trainerStats?.trainer.skills?.join(", ") || "No skills listed"}</span>
+      </div>
+    </div>
+  </div>
+</section>
+
 
       {/* Section Header */}
       <h2
-        className="text-3xl sm:text-4xl md:text-4xl font-bold mb-12 tracking-wide border-b-4 border-yellow-400 pb-2 w-full max-w-6xl text-center"
+        className="text-3xl sm:text-4xl font-bold mb-12 tracking-wide border-b-4 border-yellow-400 pb-2 w-full max-w-6xl text-center"
         style={{ color: COLORS[2] }}
       >
         Your Trainer Tools
       </h2>
 
+      {/* Trainer Stats Section */}
+      <section className="max-w-6xl w-full mb-12 px-2 sm:px-0">
+        <h3 className="text-2xl font-semibold mb-6" style={{ color: COLORS[0] }}>
+          Trainer Statistics
+        </h3>
+        {isLoading && <p className="text-gray-600">Loading stats...</p>}
+        {error && <p className="text-red-500">Error: {error}</p>}
+        {trainerStats && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl w-full px-2 sm:px-0">
+            {/* Total Slots */}
+            <div className="bg-white p-6 rounded-xl shadow-md flex flex-col items-center text-indigo-700">
+              <FaTasks size={36} className="mb-2" />
+              <p className="text-4xl font-bold">{trainerStats.slots.total}</p>
+              <p className="mt-2 font-medium">Total Slots</p>
+            </div>
+
+            {/* Available Slots */}
+            <div className="bg-white p-6 rounded-xl shadow-md flex flex-col items-center text-green-600">
+              <FaClock size={36} className="mb-2" />
+              <p className="text-4xl font-bold">{trainerStats.slots.available}</p>
+              <p className="mt-2 font-medium">Available Slots</p>
+            </div>
+
+            {/* Booked Slots */}
+            <div className="bg-white p-6 rounded-xl shadow-md flex flex-col items-center text-yellow-500">
+              <FaUsers size={36} className="mb-2" />
+              <p className="text-4xl font-bold">{trainerStats.slots.booked}</p>
+              <p className="mt-2 font-medium">Booked Slots</p>
+            </div>
+
+            {/* Total Earnings */}
+            <div className="bg-white p-6 rounded-xl shadow-md flex flex-col items-center text-red-500">
+              <FaDollarSign size={36} className="mb-2" />
+              <p className="text-4xl font-bold">${trainerStats.earnings.toFixed(2)}</p>
+              <p className="mt-2 font-medium">Total Earnings</p>
+            </div>
+
+            {/* Unique Members */}
+            <div className="bg-white p-6 rounded-xl shadow-md flex flex-col items-center text-indigo-500">
+              <FaUserGraduate size={36} className="mb-2" />
+              <p className="text-4xl font-bold">{trainerStats.uniqueMembers}</p>
+              <p className="mt-2 font-medium">Unique Members</p>
+            </div>
+
+            {/* Classes Offered */}
+            <div className="bg-white p-6 rounded-xl shadow-md flex flex-col items-center text-green-700">
+              <FaChalkboardTeacher size={36} className="mb-2" />
+              <p className="text-4xl font-bold">{trainerStats.classes.length}</p>
+              <p className="mt-2 font-medium">Classes Offered</p>
+            </div>
+          </div>
+        )}
+      </section>
+
+
       {/* Route Cards */}
-      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl w-full px-2 sm:px-0">
+      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl w-full px-2 sm:px-0">
         {trainerRoutes.map(({ to, label, icon, color, desc }) => (
           <Link
             key={to}
