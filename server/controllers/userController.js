@@ -215,3 +215,76 @@ exports.getMemberStatsByEmail = async (req, res) => {
     res.status(500).json({ message: 'Server error while getting member stats' });
   }
 };
+exports.getTrainerStatsByEmail = async function (req, res) {
+  try {
+    const { email } = req.query; // or req.params.email if you prefer
+
+    if (!email) {
+      return res.status(400).json({ message: 'Email is required' });
+    }
+
+    // Find trainer by email
+    const trainer = await Trainer.findOne({ email: email.toLowerCase().trim() });
+    if (!trainer) {
+      return res.status(404).json({ message: 'Trainer not found' });
+    }
+
+    const trainerId = trainer._id;
+
+    // Fetch slot stats
+    const totalSlots = await Slot.countDocuments({ trainerId });
+    const bookedSlotsCount = await Slot.countDocuments({ trainerId, isBooked: true });
+    const availableSlots = totalSlots - bookedSlotsCount;
+
+    const bookedSlots = await Slot.find({ trainerId, isBooked: true })
+      .populate('bookedBy', 'fullName email')
+      .populate('classIds', 'className')
+      .sort({ createdAt: 1 })
+      .limit(5)
+      .lean();
+
+    // Calculate earnings
+    const earningsResult = await Payment.aggregate([
+      { $match: { trainerId, status: 'paid' } },
+      { $group: { _id: null, totalEarnings: { $sum: '$price' } } },
+    ]);
+    const totalEarnings = earningsResult.length ? earningsResult[0].totalEarnings : 0;
+
+    // Count unique members
+    const uniqueMemberIds = await Payment.distinct('userId', { trainerId });
+    const uniqueMembersCount = uniqueMemberIds.length;
+
+    // Get classes info
+    let classes = [];
+    if (trainer.classes && trainer.classes.length > 0) {
+      classes = await Class.find({ _id: { $in: trainer.classes } }).select('className').lean();
+    }
+
+    return res.json({
+      trainer: {
+        id: trainer._id,
+        fullName: trainer.fullName,
+        email: trainer.email,
+        profileImageUrl: trainer.profileImageUrl,
+        yearsOfExperience: trainer.yearsOfExperience,
+        skills: trainer.skills,
+        availableDays: trainer.availableDays,
+        availableTime: trainer.availableTime,
+        status: trainer.status,
+      },
+      slots: {
+        total: totalSlots,
+        booked: bookedSlotsCount,
+        available: availableSlots,
+        upcomingBookedSlots: bookedSlots,
+      },
+      earnings: totalEarnings,
+      uniqueMembers: uniqueMembersCount,
+      classes,
+    });
+  } catch (error) {
+    console.error('Error fetching trainer stats by email:', error);
+    return res.status(500).json({ message: 'Server error fetching trainer stats' });
+  }
+};
+

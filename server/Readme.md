@@ -5,7 +5,7 @@ This is the **backend** for the Fitness Fusion platform – a full-featured fitn
 
 ## 🌐 Live Server URL
 
-[server site link](http://localhost:5000)
+[server site link](https://server-murex-rho-32.vercel.app/)
 
 ---
 
