@@ -7,6 +7,7 @@ import Swal from "sweetalert2";
 import { Card } from "flowbite-react";
 import axiosPublic from "../../api/axiosPublic";  // Import axiosPublic instance
 import "sweetalert2/dist/sweetalert2.min.css";
+import { Helmet } from "react-helmet-async";
 
 const Register = () => {
   const { registerUser, updateUserProfile } = useContext(AuthContext);

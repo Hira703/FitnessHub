@@ -2,8 +2,8 @@ import { createBrowserRouter } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
 import NotFound from "../pages/Error/NotFound";
 import Home from "../pages/Home/Home";
-import Register from "../pages/Auth/Register";
-import Login from "../pages/Auth/Login";
+import Register from "../pages/auth/Register";
+
 import DashboardLayout from "../layouts/DashboardLayout";
 import PrivateRoute from "../components/PrivateRoute";
 import AdminHome from "../pages/dashboard/admin/AdminHome";
@@ -29,6 +29,7 @@ import ForumPage from "../pages/forum/ForumPage";
 import Trainers from "../pages/dashboard/admin/Trainers";
 import AdminBalancePage from "../pages/dashboard/admin/AdminBalancePage";
 import AllSubscribers from "../pages/dashboard/admin/AllSubscribers";
+import Login from "../pages/auth/Login";
 
 
 const router = createBrowserRouter([
@@ -46,7 +47,8 @@ const router = createBrowserRouter([
             },
             {
                 path: "/login",
-                element: <Login />
+                element:<Login></Login>
+                
             },
             {
                 path: "/all-classes",

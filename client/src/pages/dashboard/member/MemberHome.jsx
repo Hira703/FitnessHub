@@ -1,4 +1,3 @@
-import { useEffect, useState, useContext } from "react";
 import {
   FaClipboardList,
   FaCalendarCheck,
@@ -6,8 +5,6 @@ import {
   FaCheckCircle,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { AuthContext } from "../../../context/AuthProvider";
-import axiosSecure from "../../../api/axiosSecure";
 
 const COLORS = ["#1D4ED8", "#10B981", "#F59E0B", "#EF4444"];
 
@@ -39,51 +36,28 @@ const memberLinks = [
 ];
 
 const MemberHome = () => {
-  const { user } = useContext(AuthContext);
-  const [activityCount, setActivityCount] = useState(0);
-  const [bookedSessions, setBookedSessions] = useState([]);
-  const [recentActivities, setRecentActivities] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  // useEffect(() => {
-  //   const fetchMemberData = async () => {
-  //     try {
-  //       const res1 = await axiosSecure.get(
-  //         `/api/activitylogs?email=${user?.email}`
-  //       );
-  //       const res2 = await axiosSecure.get(
-  //         `/api/bookings?email=${user?.email}`
-  //       );
-
-  //       setActivityCount(res1.data.length);
-  //       setRecentActivities(res1.data.slice(0, 3));
-  //       setBookedSessions(res2.data.slice(0, 1)); // Show next session only
-  //     } catch (err) {
-  //       console.error("Error fetching member data:", err);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   if (user?.email) {
-  //     fetchMemberData();
-  //   }
-  // }, [user]);
-
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center h-96">
-        <span className="loading loading-bars loading-lg text-indigo-600"></span>
-      </div>
-    );
-  }
+  // Static Data
+  const activityCount = 12;
+  const bookedSessions = [
+    {
+      trainerName: "John Doe",
+      className: "Strength Training",
+      date: "2025-08-01T10:30:00",
+    },
+  ];
+  const recentActivities = [
+    { type: "Workout", date: "2025-07-20" },
+    { type: "Yoga", date: "2025-07-18" },
+    { type: "Cardio", date: "2025-07-15" },
+  ];
+  const displayName = "Sonia";
 
   return (
     <div className="min-h-screen p-6 bg-gray-50 dark:bg-gray-900">
       <h2 className="text-4xl font-extrabold text-center mb-8 text-gray-900 dark:text-gray-100">
         Welcome back,{" "}
         <span className="text-indigo-600 dark:text-indigo-400">
-          {user?.displayName || "Member"}!
+          {displayName}!
         </span>
       </h2>
 
@@ -134,15 +108,15 @@ const MemberHome = () => {
           <div className="space-y-3 text-gray-800 dark:text-gray-300 text-lg">
             <p>
               <span className="font-semibold">Trainer:</span>{" "}
-              {bookedSessions[0]?.trainerName}
+              {bookedSessions[0].trainerName}
             </p>
             <p>
               <span className="font-semibold">Class:</span>{" "}
-              {bookedSessions[0]?.className}
+              {bookedSessions[0].className}
             </p>
             <p>
               <span className="font-semibold">Date:</span>{" "}
-              {new Date(bookedSessions[0]?.date).toLocaleString()}
+              {new Date(bookedSessions[0].date).toLocaleString()}
             </p>
             <p>
               <span className="font-semibold">Status:</span>{" "}
@@ -189,9 +163,11 @@ const MemberHome = () => {
 
 const StatCard = ({ icon, label, value, color }) => {
   const colors = {
-    indigo: "bg-indigo-100 text-indigo-700 dark:bg-indigo-900 dark:text-indigo-300",
+    indigo:
+      "bg-indigo-100 text-indigo-700 dark:bg-indigo-900 dark:text-indigo-300",
     green: "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300",
-    yellow: "bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300",
+    yellow:
+      "bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300",
   };
   return (
     <div

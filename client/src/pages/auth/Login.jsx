@@ -8,6 +8,7 @@ import { Card } from "flowbite-react";
 import { FcGoogle } from "react-icons/fc";
 import { HiLockClosed, HiMail } from "react-icons/hi";
 import axiosPublic from "../../api/axiosPublic"; // import axiosPublic
+import { Helmet } from "react-helmet-async";
 
 const Login = () => {
   const { loginUser, loginWithGoogle } = useContext(AuthContext);
