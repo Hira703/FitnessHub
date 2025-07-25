@@ -3,13 +3,15 @@ import { useContext, useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { AuthContext } from "../context/AuthProvider";
 import { useQuery } from "@tanstack/react-query";
-import axiosSecure from "../api/axiosSecure"; // Make sure this is your secured Axios instance
+import axiosSecure from "../api/axiosSecure";
 import Loader from "./Loader";
+
+const COLORS = ['#1D4ED8', '#10B981', '#F59E0B', '#EF4444'];
 
 const CheckoutForm = ({
   trainerId,
   trainerName,
-  slot, // slotId
+  slot,
   selectedPackage,
   amount,
   classId,
@@ -21,8 +23,10 @@ const CheckoutForm = ({
   const [loading, setLoading] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState("");
   const [slotTime, setSlotTime] = useState("");
+  const [couponCode, setCouponCode] = useState("");
+  const [finalAmount, setFinalAmount] = useState(amount);
+  const [clientSecret, setClientSecret] = useState(null);
 
-  // ✅ Fetch slot info using TanStack Query
   const {
     data: slotData,
     isLoading: isSlotLoading,
@@ -37,7 +41,6 @@ const CheckoutForm = ({
     enabled: !!slot,
   });
 
-  // ✅ Handle slot availability and time
   useEffect(() => {
     if (slotData?.isBooked) {
       Swal.fire({
@@ -52,13 +55,29 @@ const CheckoutForm = ({
     }
   }, [slotData]);
 
-  //  Handle form submission
+  const applyCouponAndCreateIntent = async () => {
+    setLoading(true);
+    try {
+      const { data } = await axiosSecure.post("/api/payments/create-payment-intent", {
+        price: amount,
+        couponCode: couponCode.trim() || null,
+      });
+
+      setFinalAmount(parseFloat(data.finalAmount));
+      setClientSecret(data.clientSecret);
+
+      Swal.fire("Coupon Applied!", `Final Price: $${data.finalAmount}`, "success");
+    } catch (error) {
+      Swal.fire("Invalid Coupon", error?.response?.data?.error || "Try again", "error");
+    }
+    setLoading(false);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      // Double-check slot availability before payment
       const slotCheckRes = await axiosSecure.get(`/api/slots/${slot}`);
       const latestSlotData = slotCheckRes.data;
 
@@ -72,15 +91,12 @@ const CheckoutForm = ({
         return;
       }
 
-      // Step 1: Create payment intent
-      const { data: intentData } = await axiosSecure.post(
-        "/api/payments/create-payment-intent",
-        { price: amount }
-      );
+      if (!clientSecret) {
+        Swal.fire("Error", "Please apply coupon or initiate payment intent first.", "error");
+        setLoading(false);
+        return;
+      }
 
-      const clientSecret = intentData.clientSecret;
-
-      // Step 2: Confirm payment
       const card = elements.getElement(CardElement);
       const paymentResult = await stripe.confirmCardPayment(clientSecret, {
         payment_method: { card },
@@ -88,32 +104,29 @@ const CheckoutForm = ({
 
       if (paymentResult.error) {
         Swal.fire("Payment Failed", paymentResult.error.message, "error");
-      } else {
-        if (paymentResult.paymentIntent.status === "succeeded") {
-          setPaymentSuccess("Payment successful!");
+      } else if (paymentResult.paymentIntent.status === "succeeded") {
+        setPaymentSuccess("Payment successful!");
 
-          // Step 3: Save payment info
-          await axiosSecure.post("/api/payments/save-payment", {
-            trainerId,
-            trainerName,
-            slotId: slot,
-            slot: slotTime,
-            package: selectedPackage,
-            price: amount,
-            paymentIntentId: paymentResult.paymentIntent.id,
-            classId,
-            userName: backendUser.name,
-            userEmail: backendUser.email,
-          });
+        await axiosSecure.post("/api/payments/save-payment", {
+          trainerId,
+          trainerName,
+          slotId: slot,
+          slot: slotTime,
+          package: selectedPackage,
+          price: finalAmount,
+          couponCode,
+          paymentIntentId: paymentResult.paymentIntent.id,
+          classId,
+          userName: backendUser.name,
+          userEmail: backendUser.email,
+        });
 
-          // Step 4: Mark slot as booked
-          await axiosSecure.patch(`/api/slots/${slot}/book`, {
-            isBooked: true,
-            bookedBy: backendUser._id,
-          });
+        await axiosSecure.patch(`/api/slots/${slot}/book`, {
+          isBooked: true,
+          bookedBy: backendUser._id,
+        });
 
-          Swal.fire("Success", "Payment completed and slot booked!", "success");
-        }
+        Swal.fire("Success", "Payment completed and slot booked!", "success");
       }
     } catch (error) {
       console.error("Payment error:", error);
@@ -123,27 +136,50 @@ const CheckoutForm = ({
     setLoading(false);
   };
 
-  if (isSlotLoading) {
-    return <Loader></Loader>;
-  }
-
-  if (isError) {
-    return <p className="text-center text-red-500">Error loading slot info: {error.message}</p>;
-  }
+  if (isSlotLoading) return <Loader />;
+  if (isError) return <p className="text-center text-red-500">Error loading slot: {error.message}</p>;
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <CardElement className="p-4 border rounded" />
+    <form
+      onSubmit={handleSubmit}
+      className="space-y-5 bg-white dark:bg-gray-900 p-6 rounded-lg shadow-lg w-full max-w-lg mx-auto transition-all duration-300"
+    >
+      {/* Coupon Code */}
+      <input
+        type="text"
+        placeholder="Enter coupon code"
+        value={couponCode}
+        onChange={(e) => setCouponCode(e.target.value)}
+        className="w-full px-4 py-3 rounded-md border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-[#10B981] bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+      />
+
+      {/* Apply Coupon Button */}
       <button
-        type="submit"
-        disabled={!stripe || loading}
-        className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded"
+        type="button"
+        onClick={applyCouponAndCreateIntent}
+        disabled={loading || !stripe}
+        className="w-full bg-[#10B981] hover:bg-green-700 text-white font-semibold py-3 rounded-md transition duration-200"
       >
-        {loading ? "Processing..." : `Pay $${amount}`}
+        Apply Coupon
       </button>
 
+      {/* Card Element */}
+      <div className="rounded-md border border-gray-300 dark:border-gray-600 p-4 bg-gray-50 dark:bg-gray-800">
+        <CardElement />
+      </div>
+
+      {/* Pay Button */}
+      <button
+        type="submit"
+        disabled={!stripe || loading || !clientSecret}
+        className="w-full bg-[#1D4ED8] hover:bg-blue-800 text-white font-semibold py-3 rounded-md transition duration-200"
+      >
+        {loading ? "Processing..." : `Pay $${finalAmount.toFixed(2)}`}
+      </button>
+
+      {/* Success Message */}
       {paymentSuccess && (
-        <p className="text-green-600 font-semibold text-center">{paymentSuccess}</p>
+        <p className="text-[#10B981] font-medium text-center">{paymentSuccess}</p>
       )}
     </form>
   );

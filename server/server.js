@@ -41,6 +41,7 @@ app.use("/api/reviews", require("./routes/reviewRoutes"));
 app.use("/api/forums", require("./routes/forumRoutes"));
 app.use("/api/newsletter", require("./routes/newsletterRoutes"));
 app.use("/api/messages", require("./routes/messageRoutes"));
+app.use("/api/coupons", require("./routes/couponRoutes"));
 
 // Test route
 app.get("/", (req, res) => {

@@ -19,7 +19,8 @@ import {
   FaTimes,
   FaMoneyCheckAlt,
   FaUserFriends,
-  FaBell
+  FaBell,
+  FaPercent
 } from "react-icons/fa";
 import { useSocket } from "../context/SocketContext";
 
@@ -104,6 +105,7 @@ const Sidebar = () => {
           { to: "/dashboard/admin/trainers", label: "All Trainers", icon: <FaChalkboardTeacher /> },
           { to: "/dashboard/admin/balance", label: "Transaction Overview", icon: <FaMoneyCheckAlt /> },
           { to: "/dashboard/admin/subscribers", label: "All Subscribers", icon: <FaUserFriends /> },
+          { to: "/dashboard/admin/coupons", label: "Coupons", icon: <FaPercent /> },
         ]
       : []),
   ];

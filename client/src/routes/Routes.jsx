@@ -32,6 +32,7 @@ import AllSubscribers from "../pages/dashboard/admin/AllSubscribers";
 import Login from "../pages/auth/Login";
 import ManageClasses from "../pages/dashboard/admin/ManageClasses";
 import TrainerMessages from "../pages/dashboard/trainer/TrainerMessages";
+import CreateCoupon from "../pages/dashboard/admin/CreateCoupon";
 
 
 const router = createBrowserRouter([
@@ -145,6 +146,10 @@ const router = createBrowserRouter([
                     {
                         path:"manage-classes",
                         element:<ManageClasses></ManageClasses>
+                    },
+                    {
+                        path:"coupons",
+                        element:<CreateCoupon></CreateCoupon>
                     }
 
                 ]

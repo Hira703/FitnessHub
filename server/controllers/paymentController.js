@@ -4,21 +4,55 @@ const Trainer = require('../models/Trainer');
 const Class = require('../models/Class');
 const Subscriber = require('../models/NewsletterSubscriber');
 
+const Coupon = require("../models/Coupon"); // Adjust path based on your structure
+
 exports.createPaymentIntent = async (req, res) => {
-  const { price } = req.body;
-  const amount = parseInt(price * 100);
+  const { price, couponCode } = req.body;
 
   try {
+    let finalAmount = parseFloat(price); // initial price in dollars
+
+    //  Step 1: Validate coupon if provided
+    if (couponCode) {
+      const coupon = await Coupon.findOne({ code: couponCode });
+
+      if (!coupon) {
+        return res.status(400).json({ error: "Invalid coupon code." });
+      }
+
+      if (coupon.expiryDate && new Date(coupon.expiryDate) < new Date()) {
+        return res.status(400).json({ error: "Coupon has expired." });
+      }
+
+      if (coupon.percentOff) {
+        finalAmount = finalAmount - (finalAmount * coupon.percentOff) / 100;
+      } else if (coupon.amountOff) {
+        finalAmount = finalAmount - coupon.amountOff;
+      }
+
+      if (finalAmount < 0) finalAmount = 0;
+    }
+
+    const amountInCents = Math.round(finalAmount * 100);
+
+    //  Step 2: Create payment intent with final amount
     const paymentIntent = await stripe.paymentIntents.create({
-      amount,
-      currency: 'usd',
-      payment_method_types: ['card']
+      amount: amountInCents,
+      currency: "usd",
+      payment_method_types: ["card"],
     });
-    res.send({ clientSecret: paymentIntent.client_secret });
+
+    //  Step 3: Return secret and final amount (for UI display if needed)
+    res.send({
+      clientSecret: paymentIntent.client_secret,
+      finalAmount: finalAmount.toFixed(2),
+    });
   } catch (error) {
+    console.error("Stripe error:", error);
     res.status(500).send({ error: error.message });
   }
 };
+
 
 
 

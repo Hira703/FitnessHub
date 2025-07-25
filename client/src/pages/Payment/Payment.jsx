@@ -62,7 +62,7 @@ const PaymentPage = () => {
   }
 
   return (
-    <div className="max-w-xl mx-auto px-4 py-10">
+    <div className="max-w-xl mx-auto px-4 py-16">
       <h2 className="text-2xl font-bold mb-4 text-center text-[#1D4ED8]">
         Payment for {trainer?.fullName}'s {selectedPackage} Package
       </h2>
