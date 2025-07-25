@@ -12,6 +12,7 @@ import {
 import { Button, Label, TextInput, Select, Textarea } from "flowbite-react";
 import axiosSecure from "../../../api/axiosSecure";
 import Swal from "sweetalert2";
+import Loader from "../../../components/Loader";
 
 const COLORS = {
   primary: "#1D4ED8",
@@ -102,6 +103,16 @@ const ProfilePage = () => {
       });
     }
   };
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-[200px]">
+       <Loader></Loader>
+      </div>
+    );
+  }
+  if (isError) {
+    return <div>Error: {error.message}</div>;
+  }
 
   return (
     <div className="max-w-5xl mx-auto p-4 sm:p-6 lg:p-10 bg-white dark:bg-gray-900 shadow-lg rounded-lg mt-10">

@@ -164,3 +164,34 @@ exports.getFinancialOverview = async (req, res) => {
     res.status(500).json({ message: 'Failed to load financial data' });
   }
 };
+exports.getBookedMembersByTrainerEmail = async (req, res) => {
+  const trainerEmail = req.params.email;
+
+  try {
+    // Step 1: Find trainer ID by email
+    const trainer = await Trainer.findOne({ email: trainerEmail });
+    // console.log(trainer);
+
+    if (!trainer) {
+      return res.status(404).json({ error: "Trainer not found" });
+    }
+
+    // Step 2: Find payments with that trainerId
+    const payments = await Payment.find({ trainerId: trainer._id }).select("userName userEmail");
+
+    // Step 3: Get unique members
+    const uniqueMembersMap = new Map();
+    payments.forEach(({ userName, userEmail }) => {
+      if (!uniqueMembersMap.has(userEmail)) {
+        uniqueMembersMap.set(userEmail, { name: userName, email: userEmail });
+      }
+    });
+
+    const uniqueMembers = Array.from(uniqueMembersMap.values());
+
+    res.status(200).json(uniqueMembers);
+  } catch (error) {
+    console.error("Error fetching members:", error);
+    res.status(500).json({ error: "Server error" });
+  }
+};

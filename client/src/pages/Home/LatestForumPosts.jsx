@@ -4,6 +4,7 @@ import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 import { motion } from "framer-motion";
 import axiosSecure from "../../api/axiosSecure"; // Adjust the path if needed
 import axiosPublic from "../../api/axiosPublic";
+import Loader from "../../components/Loader";
 
 const COLORS = ["#1D4ED8", "#10B981", "#F59E0B", "#EF4444"];
 
@@ -46,9 +47,9 @@ const LatestForumPosts = () => {
 
   if (isLoading)
     return (
-      <p className="text-center py-8 text-lg font-medium text-gray-600 animate-pulse">
-        Loading latest posts...
-      </p>
+      <div className="flex justify-center items-center min-h-[200px]">
+        <Loader>
+        </Loader></div>
     );
 
   if (isError)

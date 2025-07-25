@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import axiosSecure from '../../../api/axiosSecure';
 
 import Swal from 'sweetalert2';
+import Loader from '../../../components/Loader';
 
 const COLORS = ['#1D4ED8', '#10B981', '#F59E0B', '#EF4444'];
 
@@ -84,7 +85,8 @@ const ManageClasses = () => {
 
         {/* Table */}
         {isLoading ? (
-          <p className="text-center py-10 text-gray-600">Loading...</p>
+         <div className="flex items-center justify-center h-96">
+          <Loader></Loader></div>
         ) : (
           <div className="overflow-x-auto rounded-lg shadow-md bg-white">
             <table className="w-full text-left min-w-[640px] text-sm sm:text-base">

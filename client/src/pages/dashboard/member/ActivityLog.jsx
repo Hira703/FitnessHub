@@ -4,6 +4,7 @@ import { AuthContext } from "../../../context/AuthProvider";
 import Modal from "../../../components/Modal";
 import axiosSecure from "../../../api/axiosSecure";
 import { FaEye } from "react-icons/fa";
+import Loader from "../../../components/Loader";
 
 const COLORS = {
   default: "#1D4ED8",  // blue
@@ -40,7 +41,8 @@ const ActivityLog = () => {
       </h2>
 
       {isLoading ? (
-        <p className="text-lg text-gray-500 text-center">Loading applications...</p>
+      <div className="flex justify-center items-center h-72 sm:h-96">
+        <Loader></Loader></div>
       ) : error ? (
         <p className="text-lg text-red-500 text-center">Error fetching data.</p>
       ) : applications.length === 0 ? (

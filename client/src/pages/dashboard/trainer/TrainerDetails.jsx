@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 
 import axiosSecure from "../../../api/axiosSecure";
+import Loader from "../../../components/Loader";
 
 const COLORS = ['#1D4ED8', '#10B981', '#F59E0B', '#EF4444'];
 
@@ -68,7 +69,7 @@ const TrainerDetails = () => {
   if (loadingTrainer || !trainer||loadingSlots) {
     return (
       <div className="flex items-center justify-center min-h-screen text-gray-600 font-semibold">
-        Loading trainer details...
+        <Loader></Loader>
       </div>
     );
   }

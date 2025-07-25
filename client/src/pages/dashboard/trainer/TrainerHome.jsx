@@ -13,6 +13,7 @@ import { useQuery } from "@tanstack/react-query";
 import { AuthContext } from "../../../context/AuthProvider";
 import axiosSecure from "../../../api/axiosSecure";
 import { Link } from "react-router-dom";
+import Loader from "../../../components/Loader";
 
 const COLORS = ["#1D4ED8", "#10B981", "#F59E0B", "#EF4444"];
 
@@ -65,7 +66,11 @@ const TrainerHome = () => {
     },
   });
 
-  if (isLoading) return <div className="text-center py-8">Loading...</div>;
+  if (isLoading) return (
+    <div className="flex justify-center items-center min-h-[200px]">
+      <Loader></Loader>
+    </div>
+  );
   if (isError) return <div className="text-center text-red-500 py-8">{error.message}</div>;
   // console.log(trainerStats);
 

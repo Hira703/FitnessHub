@@ -2,6 +2,7 @@ import React from "react";
 import axiosSecure from "../../../api/axiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
+import Loader from "../../../components/Loader";
 
 const COLORS = ["#1D4ED8", "#10B981", "#F59E0B", "#EF4444"];
 
@@ -50,9 +51,7 @@ export default function AdminBalancePage() {
   if (isLoading) {
     return (
       <main className="flex justify-center items-center min-h-screen bg-gradient-to-tr from-blue-100 to-green-100">
-        <p className="text-blue-700 text-lg font-semibold animate-pulse">
-          Loading financial overview...
-        </p>
+        <Loader></Loader>
       </main>
     );
   }

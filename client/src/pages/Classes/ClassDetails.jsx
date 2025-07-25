@@ -12,6 +12,7 @@ import {
   FaCheckCircle,
 } from 'react-icons/fa';
 import axiosPublic from '../../api/axiosPublic';
+import Loader from '../../components/Loader';
 
 const COLORS = ['#1D4ED8', '#10B981', '#F59E0B', '#EF4444'];
 
@@ -36,7 +37,7 @@ const ClassDetails = () => {
   });
 
   if (isLoading) {
-    return <p className="text-center mt-10 text-gray-500">Loading class details...</p>;
+    return <p className="text-center mt-10 text-gray-500"><Loader /></p>;
   }
 
   if (isError) {
@@ -59,8 +60,8 @@ const ClassDetails = () => {
   } = classItem;
 
   return (
-    <div className="px-4 py-10 min-h-screen bg-gray-100 dark:bg-gray-950">
-      <div className="max-w-6xl mx-auto bg-white dark:bg-gray-900 rounded-3xl shadow-2xl p-8 md:p-12 space-y-12 border border-gray-200 dark:border-gray-800">
+    <div className="px-4 py-10 min-h-screen bg-gray-100">
+      <div className="max-w-6xl mx-auto bg-white rounded-3xl shadow-2xl p-8 md:p-12 space-y-12 border border-gray-200">
         
 
         {/* Image */}
@@ -73,16 +74,16 @@ const ClassDetails = () => {
         </div>
         {/* Title & Description */}
         <div className="text-center space-y-4">
-          <h1 className="text-4xl font-extrabold text-gray-800 dark:text-white">{className}</h1>
+          <h1 className="text-4xl font-extrabold text-gray-800">{className}</h1>
           <div className="h-1 w-28 bg-blue-500 mx-auto rounded-full"></div>
-          <p className="text-gray-600 dark:text-gray-300 text-base leading-relaxed max-w-2xl mx-auto">
+          <p className="text-gray-600 text-base leading-relaxed max-w-2xl mx-auto">
             {details}
           </p>
         </div>
 
         {/* Class Info */}
-        <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-3xl p-8 shadow-md">
-          <h3 className="text-2xl font-semibold text-gray-800 dark:text-white mb-6">
+        <div className="bg-white border border-gray-200 rounded-3xl p-8 shadow-md">
+          <h3 className="text-2xl font-semibold text-gray-800 mb-6">
             Class Information
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -98,11 +99,11 @@ const ClassDetails = () => {
 
         {/* Equipment Section */}
         {equipmentNeeded?.length > 0 && (
-          <div className="bg-green-50 dark:bg-gray-800 border border-green-200 dark:border-gray-700 p-6 rounded-3xl shadow-sm">
-            <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-4">
+          <div className="bg-green-50 border border-green-200 p-6 rounded-3xl shadow-sm">
+            <h3 className="text-xl font-semibold text-gray-800 mb-4">
               Equipment Needed
             </h3>
-            <ul className="space-y-3 text-sm text-gray-800 dark:text-gray-300">
+            <ul className="space-y-3 text-sm text-gray-800">
               {equipmentNeeded.map((item, idx) => (
                 <li key={idx} className="flex items-center gap-2">
                   <FaCheckCircle className="text-green-500" />
@@ -116,7 +117,7 @@ const ClassDetails = () => {
         {/* Trainers Section */}
         {trainers?.length > 0 && (
           <div>
-            <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-6">
+            <h3 className="text-xl font-semibold text-gray-800 mb-6">
               Meet the Trainers
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -124,7 +125,7 @@ const ClassDetails = () => {
                 <div
                   key={trainer._id}
                   onClick={() => navigate(`/trainer-details/${trainer._id}`)}
-                  className="flex items-center gap-4 p-4 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl shadow hover:shadow-md cursor-pointer transition duration-300"
+                  className="flex items-center gap-4 p-4 bg-white border border-gray-200 rounded-2xl shadow hover:shadow-md cursor-pointer transition duration-300"
                 >
                   <img
                     src={trainer.profileImageUrl}
@@ -132,10 +133,10 @@ const ClassDetails = () => {
                     className="w-16 h-16 rounded-full object-cover border-2 border-blue-500"
                   />
                   <div>
-                    <p className="text-base font-medium text-gray-800 dark:text-white">
+                    <p className="text-base font-medium text-gray-800">
                       {trainer.fullName}
                     </p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">View Profile</p>
+                    <p className="text-xs text-gray-500">View Profile</p>
                   </div>
                 </div>
               ))}
@@ -155,9 +156,9 @@ const ClassDetails = () => {
 };
 
 const Info = ({ icon, text, color }) => (
-  <div className="flex items-center gap-3 bg-gray-50 dark:bg-gray-800 p-4 rounded-2xl shadow-sm">
+  <div className="flex items-center gap-3 bg-gray-50 p-4 rounded-2xl shadow-sm">
     <span className="text-xl" style={{ color }}>{icon}</span>
-    <span className="text-sm text-gray-700 dark:text-gray-300">{text}</span>
+    <span className="text-sm text-gray-700">{text}</span>
   </div>
 );
 

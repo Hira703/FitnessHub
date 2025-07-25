@@ -5,6 +5,7 @@ import { MdLocationOn, MdSchool } from 'react-icons/md';
 import { useQuery } from '@tanstack/react-query';
 import axiosSecure from '../../api/axiosSecure'; 
 import axiosPublic from '../../api/axiosPublic';
+import Loader from '../../components/Loader';
 
 const COLORS = ['#1D4ED8', '#10B981', '#F59E0B', '#EF4444'];
 
@@ -117,7 +118,8 @@ const AllClasses = () => {
 
       {/* Classes */}
       {isLoading ? (
-        <p className="text-center text-gray-500">Loading classes...</p>
+        <div className="flex justify-center items-center min-h-[200px]">
+          <Loader></Loader></div>
       ) : isError ? (
         <p className="text-center text-red-500">Error: {error.message}</p>
       ) : (

@@ -5,6 +5,7 @@ import ClassCard from "../../components/ClassCard";
 import axiosSecure from "../../api/axiosSecure"; // Adjust the path if needed
 import { Spinner } from "flowbite-react";
 import axiosPublic from "../../api/axiosPublic";
+import Loader from "../../components/Loader";
 
 const fetchTopBookedClasses = async () => {
   const res = await axiosPublic.get("/api/classes?sortBy=bookings&limit=6");
@@ -28,7 +29,7 @@ const FeaturedClassesSection = () => {
   if (isLoading)
     return (
       <div className="flex justify-center items-center min-h-[200px]">
-        <Spinner size="xl" />
+       <Loader></Loader>
       </div>
     );
 

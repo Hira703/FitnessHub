@@ -3,6 +3,7 @@ import { FaTrashAlt } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import axiosSecure from '../../../api/axiosSecure';
 import 'sweetalert2/dist/sweetalert2.min.css';
+import Loader from '../../../components/Loader';
 
 const COLORS = ['#1D4ED8', '#10B981', '#F59E0B', '#EF4444']; // Blue, Green, Amber, Red
 
@@ -71,7 +72,7 @@ const Trainers = () => {
 
       {isLoading ? (
         <div className="flex justify-center py-20">
-          <span className="loading loading-bars loading-lg text-blue-600"></span>
+          <Loader></Loader>
         </div>
       ) : isError ? (
         <div className="text-center text-red-600 py-10">

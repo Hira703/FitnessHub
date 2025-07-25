@@ -9,6 +9,7 @@ import { useContext, useEffect, useState } from "react";
 
 import { AuthContext } from "../../../context/AuthProvider";
 import axiosSecure from "../../../api/axiosSecure";
+import Loader from "../../../components/Loader";
 
 // Custom color palette
 const COLORS = ["#1D4ED8", "#10B981", "#F59E0B", "#EF4444"];
@@ -48,7 +49,7 @@ const MemberHome = () => {
   useEffect(() => {
     if (user?.email) {
       axiosSecure
-        .get(`/api/users/stats/${user.email}`)
+        .get(`/api/users/stats/member/${user.email}`)
         .then((res) => {
           setStats(res.data);
           setLoading(false);
@@ -60,7 +61,7 @@ const MemberHome = () => {
     }
   }, [user?.email]);
 
-  if (loading || !stats) return <div className="text-center mt-10">Loading...</div>;
+  if (loading || !stats) return <div className="text-center mt-10"><Loader></Loader></div>;
 
   const {
     totalPayment,

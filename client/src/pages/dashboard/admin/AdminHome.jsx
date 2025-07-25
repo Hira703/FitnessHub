@@ -10,6 +10,7 @@ import {
 import axiosSecure from '../../../api/axiosSecure';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { useQuery } from '@tanstack/react-query';
+import Loader from '../../../components/Loader';
 
 const COLORS = ['#1D4ED8', '#10B981', '#F59E0B', '#EF4444'];
 
@@ -69,7 +70,7 @@ const AdminHome = () => {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-72 sm:h-96">
-        <span className="loading loading-bars loading-lg text-primary"></span>
+     <Loader></Loader>
       </div>
     );
   }

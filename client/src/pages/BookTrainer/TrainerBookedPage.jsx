@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import { FaUser, FaClock, FaCheckCircle } from "react-icons/fa";
 import axiosSecure from "../../api/axiosSecure"; // Adjust path as needed
+import Loader from "../../components/Loader";
 
 const TrainerBookedPage = () => {
   const { id } = useParams();
@@ -154,7 +155,7 @@ const TrainerBookedPage = () => {
   if (loadingTrainer||loadingSlot) {
     return (
       <div className="text-center py-20 text-lg font-semibold">
-        Loading  details...
+      <Loader></Loader>
       </div>
     );
   }

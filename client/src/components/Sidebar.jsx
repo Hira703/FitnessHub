@@ -18,8 +18,10 @@ import {
   FaBars,
   FaTimes,
   FaMoneyCheckAlt,
-  FaUserFriends
+  FaUserFriends,
+  FaBell
 } from "react-icons/fa";
+import { useSocket } from "../context/SocketContext";
 
 const COLORS = ['#1D4ED8', '#10B981', '#F59E0B', '#EF4444'];
 const PRIMARY_COLOR = COLORS[0];
@@ -30,11 +32,30 @@ const Sidebar = () => {
   const role = backendUser?.role || "member";
   const location = useLocation();
   const navigate = useNavigate();
+  const [unreadMessages, setUnreadMessages] = useState(0);
+  const socket = useSocket();
 
   useEffect(() => {
     setIsOpen(false);
-  }, [location]);
-
+    if (!socket || role !== "trainer" || !backendUser?.email) return;
+    const handleNewMessage = (message) => {
+      if (message.receiverEmail === backendUser.email) {
+        setUnreadMessages((prev) => prev + 1);
+      }
+    };
+  
+    socket.on("newMessage", handleNewMessage);
+    return () => socket.off("newMessage", handleNewMessage);
+  }, [location,socket, backendUser?.email, role]);
+  useEffect(() => {
+    const path = location.pathname;
+    const isMessagesPage = path === "/dashboard/trainer/messages" || path === "/dashboard/trainer/chat-with-members";
+  
+    if (isMessagesPage) {
+      setUnreadMessages(0);
+    }
+  }, [location.pathname]);
+  
   const handleLogout = () => {
     logoutUser();
     navigate("/login");
@@ -58,6 +79,19 @@ const Sidebar = () => {
           { to: "/dashboard/trainer/add-slot", label: "Add New Slot", icon: <FaPlusCircle /> },
           { to: "/dashboard/trainer/manage-slot", label: "Manage Slots", icon: <FaTasks /> },
           { to: "/dashboard/trainer/add-forum", label: "Add Forum", icon: <FaComments /> },
+          {
+            to: "/dashboard/trainer/messages",
+            label: "Messages",
+            icon: (
+<div className="relative inline-block">
+  <FaBell size={20} />
+  <span className="absolute top-0 right-0 bg-red-600 text-white rounded-full px-1.5 text-xs font-bold">
+    {unreadMessages > 99 ? "99+" : unreadMessages}
+  </span>
+</div>
+            )
+          },
+          
         ]
       : []),
     ...(role === "admin"

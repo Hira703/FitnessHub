@@ -13,6 +13,7 @@ import { Fade } from "react-awesome-reveal";
 import { useQuery } from "@tanstack/react-query";
 import axiosPublic from "../../api/axiosPublic";
 import { Helmet } from "react-helmet-async";
+import Loader from "../../components/Loader";
 
 const COLORS = ['#1D4ED8', '#10B981', '#F59E0B', '#EF4444'];
 
@@ -41,10 +42,8 @@ const AllTrainers = () => {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center h-48 text-xl font-semibold text-gray-600">
-        Loading trainers...
-      </div>
-    );
+      <Loader></Loader>
+    )
   }
 
   if (isError) {

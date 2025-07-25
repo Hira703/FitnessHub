@@ -5,6 +5,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axiosSecure from "../../../api/axiosSecure";
 import Swal from "sweetalert2";
 import 'sweetalert2/dist/sweetalert2.min.css';
+import Loader from "../../../components/Loader";
 
 // Fetch pending trainers
 const fetchPendingTrainers = async () => {
@@ -72,7 +73,7 @@ const AppliedTrainers = () => {
 
       {isLoading ? (
         <div className="flex justify-center items-center min-h-[200px]">
-          <div className="animate-spin rounded-full h-10 w-10 border-4 border-blue-500 border-t-transparent"></div>
+         <Loader></Loader>
         </div>
       ) : trainers.length === 0 ? (
         <p className="text-center text-gray-500 text-lg">No pending applications.</p>

@@ -3,6 +3,7 @@ import { FaEnvelopeOpenText, FaTrashAlt } from 'react-icons/fa';
 import axiosSecure from '../../../api/axiosSecure';
 import Swal from 'sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
+import Loader from '../../../components/Loader';
 
 const COLORS = ['#1D4ED8', '#10B981', '#F59E0B', '#EF4444'];
 
@@ -59,7 +60,7 @@ const AllSubscribers = () => {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <span className="loading loading-bars loading-lg text-primary"></span>
+       <Loader></Loader>
       </div>
     );
   }

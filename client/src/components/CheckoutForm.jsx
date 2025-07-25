@@ -4,6 +4,7 @@ import Swal from "sweetalert2";
 import { AuthContext } from "../context/AuthProvider";
 import { useQuery } from "@tanstack/react-query";
 import axiosSecure from "../api/axiosSecure"; // Make sure this is your secured Axios instance
+import Loader from "./Loader";
 
 const CheckoutForm = ({
   trainerId,
@@ -51,7 +52,7 @@ const CheckoutForm = ({
     }
   }, [slotData]);
 
-  // ✅ Handle form submission
+  //  Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -123,7 +124,7 @@ const CheckoutForm = ({
   };
 
   if (isSlotLoading) {
-    return <p className="text-center text-blue-600 font-semibold">Checking slot availability...</p>;
+    return <Loader></Loader>;
   }
 
   if (isError) {

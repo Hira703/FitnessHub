@@ -10,6 +10,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import axiosPublic from "../../api/axiosPublic";
+import Loader from "../../components/Loader";
 
 const COLORS = ["#1D4ED8", "#10B981", "#F59E0B", "#EF4444"];
 
@@ -36,9 +37,9 @@ const TestimonialsCarousel = () => {
 
   if (isLoading)
     return (
-      <p className="text-center text-lg py-10 text-gray-600 animate-pulse">
-        Loading reviews...
-      </p>
+      <div className="flex justify-center items-center min-h-[200px]">
+        <Loader></Loader>
+      </div>
     );
 
   if (isError)

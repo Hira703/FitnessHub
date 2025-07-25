@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import CheckoutForm from "../../components/CheckoutForm";
 import axiosSecure from "../../api/axiosSecure";
 import { ImSpinner2 } from "react-icons/im";
+import Loader from "../../components/Loader";
 
 const stripePromise = loadStripe("pk_test_51Rg3qRIEw3M6eUMZgYG7cUWZhthnJcPfIwUVP4xnyIDzT3rjxnadMzwxOdY6TE818tKnI0J9IyWFCcHUk99N6S8500ARhY03xb");
 
@@ -47,7 +48,7 @@ const PaymentPage = () => {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-[60vh]">
-        <ImSpinner2 className="animate-spin text-4xl text-[#1D4ED8]" />
+        <Loader></Loader>
       </div>
     );
   }

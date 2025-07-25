@@ -3,6 +3,7 @@ import TrainerSlotsTable from "../../../components/TrainerSlotsTable";
 import { AuthContext } from "../../../context/AuthProvider";
 import { useQuery } from "@tanstack/react-query";
 import axiosSecure from "../../../api/axiosSecure";
+import Loader from "../../../components/Loader";
 
 const ManageSlots = () => {
   const { backendUser } = useContext(AuthContext);
@@ -22,7 +23,7 @@ const ManageSlots = () => {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-[200px]">
-        <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+      <Loader></Loader>
       </div>
     );
   }
