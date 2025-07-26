@@ -4,6 +4,7 @@ import { AuthContext } from "../../context/AuthProvider";
 import axiosSecure from "../../api/axiosSecure";
 import axiosPublic from "../../api/axiosPublic";
 import Swal from "sweetalert2";
+import { Helmet } from "react-helmet-async";
 const BeATrainer = () => {
   const { user } = useContext(AuthContext);
   const role = user?.role || "member";
@@ -158,11 +159,16 @@ const BeATrainer = () => {
     );
 
   return (
+    <>
+     <Helmet>
+        <title>Be a Trainer</title>
+        <meta name="description" content="Welcome to Be a Trainer page" />
+      </Helmet>
     <form
       onSubmit={handleSubmit}
-      className="max-w-4xl mx-auto p-8 bg-white rounded-lg shadow"
+      className="max-w-4xl mx-auto p-8 bg-white rounded-lg shadow py-16"
     >
-      <h2 className="text-3xl font-bold mb-8 text-center text-blue-700">
+      <h2 className="text-3xl font-bold mb-8 text-center text-blue-700  ">
         Be a Trainer
       </h2>
 
@@ -315,6 +321,7 @@ const BeATrainer = () => {
         {loading ? "Submitting..." : "Submit Application"}
       </button>
     </form>
+    </>
   );
 };
 

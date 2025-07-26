@@ -7,9 +7,15 @@ import FeaturedClassesSection from './FeaturedClassesSection';
 import TestimonialsCarousel from './TestimonialsCarousel';
 import LatestForumPosts from './LatestForumPosts';
 import TeamSection from './TeamSection';
+import { Helmet } from 'react-helmet-async';
 
 const Home = () => {
     return (
+        <>
+         <Helmet>
+        <title>Home</title>
+        <meta name="description" content="Welcome to Login page" />
+      </Helmet>
         <div>
            <Banner></Banner> 
            <FeaturedSection></FeaturedSection>
@@ -20,6 +26,7 @@ const Home = () => {
            <TeamSection></TeamSection>
            <NewsletterForm></NewsletterForm>
         </div>
+        </>
     );
 };
 

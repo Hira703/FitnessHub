@@ -14,6 +14,7 @@ import { AuthContext } from "../../../context/AuthProvider";
 import axiosSecure from "../../../api/axiosSecure";
 import { Link } from "react-router-dom";
 import Loader from "../../../components/Loader";
+import { Helmet } from "react-helmet-async";
 
 const COLORS = ["#1D4ED8", "#10B981", "#F59E0B", "#EF4444"];
 
@@ -75,6 +76,11 @@ const TrainerHome = () => {
   // console.log(trainerStats);
 
   return (
+    <>
+     <Helmet>
+        <title>Trainer Dashboard</title>
+        <meta name="description" content="Welcome to Login page" />
+      </Helmet>
     <main className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-green-50 flex flex-col items-center py-10 px-4 sm:px-8 md:py-14">
       {/* Welcome & Profile Card */}
       <section className="max-w-5xl w-full mb-16 bg-white rounded-3xl shadow-2xl px-4 py-8 sm:px-8 sm:py-10 flex flex-col md:flex-row items-center gap-10 md:gap-20">
@@ -216,6 +222,7 @@ const TrainerHome = () => {
         ))}
       </section>
     </main>
+    </>
   );
 };
 

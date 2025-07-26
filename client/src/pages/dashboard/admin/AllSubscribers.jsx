@@ -4,6 +4,7 @@ import axiosSecure from '../../../api/axiosSecure';
 import Swal from 'sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 import Loader from '../../../components/Loader';
+import { Helmet } from 'react-helmet-async';
 
 const COLORS = ['#1D4ED8', '#10B981', '#F59E0B', '#EF4444'];
 
@@ -74,6 +75,11 @@ const AllSubscribers = () => {
   }
 
   return (
+    <>
+     <Helmet>
+        <title>All Subscribers</title>
+        <meta name="description" content="Welcome to Login page" />
+      </Helmet>
     <div className="p-4 md:p-6 max-w-7xl mx-auto">
       <div className="flex flex-col md:flex-row items-center justify-between mb-6 gap-4">
         <h2 className="text-3xl font-extrabold flex items-center gap-3 bg-gradient-to-r from-[#1D4ED8] via-[#10B981] to-[#F59E0B] bg-clip-text text-transparent">
@@ -151,6 +157,7 @@ const AllSubscribers = () => {
         </div>
       )}
     </div>
+    </>
   );
 };
 

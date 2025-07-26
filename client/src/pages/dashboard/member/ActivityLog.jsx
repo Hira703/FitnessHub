@@ -5,6 +5,7 @@ import Modal from "../../../components/Modal";
 import axiosSecure from "../../../api/axiosSecure";
 import { FaEye } from "react-icons/fa";
 import Loader from "../../../components/Loader";
+import { Helmet } from "react-helmet-async";
 
 const COLORS = {
   default: "#1D4ED8",  // blue
@@ -32,6 +33,11 @@ const ActivityLog = () => {
   });
 
   return (
+    <>
+     <Helmet>
+        <title>My Activity Log</title>
+        <meta name="description" content="Welcome to Login page" />
+      </Helmet>
     <div className="p-6 max-w-6xl mx-auto">
       <h2
         className="text-3xl font-bold mb-8 text-center"
@@ -119,6 +125,7 @@ const ActivityLog = () => {
         </Modal>
       )}
     </div>
+    </>
   );
 };
 

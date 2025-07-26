@@ -7,6 +7,7 @@ import CheckoutForm from "../../components/CheckoutForm";
 import axiosSecure from "../../api/axiosSecure";
 import { ImSpinner2 } from "react-icons/im";
 import Loader from "../../components/Loader";
+import { Helmet } from "react-helmet-async";
 
 const stripePromise = loadStripe("pk_test_51Rg3qRIEw3M6eUMZgYG7cUWZhthnJcPfIwUVP4xnyIDzT3rjxnadMzwxOdY6TE818tKnI0J9IyWFCcHUk99N6S8500ARhY03xb");
 
@@ -62,6 +63,11 @@ const PaymentPage = () => {
   }
 
   return (
+    <>
+     <Helmet>
+        <title>Payment</title>
+        <meta name="description" content="Welcome to Login page" />
+      </Helmet>
     <div className="max-w-xl mx-auto px-4 py-16">
       <h2 className="text-2xl font-bold mb-4 text-center text-[#1D4ED8]">
         Payment for {trainer?.fullName}'s {selectedPackage} Package
@@ -90,6 +96,7 @@ const PaymentPage = () => {
         />
       </Elements>
     </div>
+    </>
   );
 };
 

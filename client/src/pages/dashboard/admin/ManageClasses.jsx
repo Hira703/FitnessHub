@@ -4,6 +4,7 @@ import axiosSecure from '../../../api/axiosSecure';
 
 import Swal from 'sweetalert2';
 import Loader from '../../../components/Loader';
+import { Helmet } from 'react-helmet-async';
 
 const COLORS = ['#1D4ED8', '#10B981', '#F59E0B', '#EF4444'];
 
@@ -59,6 +60,11 @@ const ManageClasses = () => {
   
 
   return (
+    <>
+     <Helmet>
+        <title>Fitness Club | Manage Classes</title>
+        <meta name="description" content="Welcome to Login page" />
+      </Helmet>
     <div className="p-4 sm:p-6 bg-gray-50 min-h-screen">
       <div className="max-w-7xl mx-auto">
         <h2
@@ -162,6 +168,7 @@ const ManageClasses = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

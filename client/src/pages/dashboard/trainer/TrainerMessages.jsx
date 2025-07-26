@@ -3,6 +3,7 @@ import { AuthContext } from "../../../context/AuthProvider";
 import { useSocket } from "../../../context/SocketContext";
 import { FaPaperPlane } from "react-icons/fa";
 import axiosSecure from "../../../api/axiosSecure";
+import { Helmet } from "react-helmet-async";
 
 const COLORS = ['#1D4ED8', '#10B981', '#F59E0B', '#EF4444'];
 
@@ -98,6 +99,11 @@ const TrainerMessages = () => {
   };
 
   return (
+    <>
+     <Helmet>
+        <title>Trainer Messages</title>
+        <meta name="description" content="Welcome to Login page" />
+      </Helmet>
     <div className="flex flex-col md:flex-row h-[calc(100vh-80px)] bg-gray-50 rounded shadow-lg overflow-hidden">
       {/* Left: Member list */}
       <div className="md:w-1/3 w-full bg-white border-r border-gray-200 p-6 overflow-y-auto max-h-[calc(100vh-80px)]">
@@ -194,6 +200,7 @@ const TrainerMessages = () => {
         )}
       </div>
     </div>
+    </>
   );
 };
 

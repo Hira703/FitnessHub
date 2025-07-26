@@ -11,6 +11,7 @@ import axiosSecure from '../../../api/axiosSecure';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { useQuery } from '@tanstack/react-query';
 import Loader from '../../../components/Loader';
+import { Helmet } from 'react-helmet-async';
 
 const COLORS = ['#1D4ED8', '#10B981', '#F59E0B', '#EF4444'];
 
@@ -84,6 +85,11 @@ const AdminHome = () => {
   }
 
   return (
+    <>
+     <Helmet>
+        <title>Admin Dashboard</title>
+        <meta name="description" content="Welcome to Login page" />
+      </Helmet>
     <div className="p-4 sm:p-6 md:p-8 bg-gray-50 min-h-screen max-w-7xl mx-auto">
       <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-center text-indigo-700 mb-10">
         Admin Dashboard Overview
@@ -149,6 +155,7 @@ const AdminHome = () => {
         </ChartCard>
       </div>
     </div>
+    </>
   );
 };
 
@@ -167,6 +174,7 @@ const StatCard = ({ icon, label, value, color }) => (
       <p className="text-lg sm:text-2xl font-bold text-gray-900 break-words">{value}</p>
     </div>
   </div>
+  
 );
 
 const ChartCard = ({ title, children }) => (

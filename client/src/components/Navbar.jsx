@@ -284,16 +284,29 @@ export default function Navbar() {
           >
             Community
           </NavLink>
+         
           {user && user.role && (
+            <>
             <li>
               <NavLink
                 to={`/dashboard/${user.role}`}
-                className="hover:text-primary"
+                className="hover:text-primary "
                 style={{ color: COLORS[1] }}
               >
                 Dashboard
               </NavLink>
             </li>
+            <li>
+            <NavLink
+                  to={`/be-a-trainer`}
+                  className="hover:text-[${COLORS[2]}] transition-colors duration-300"
+                  style={{ color: COLORS[2] }}
+                >
+                  Be a Trainer
+                </NavLink>
+            </li>
+
+            </>
           )}
           {!user ? (
             <>

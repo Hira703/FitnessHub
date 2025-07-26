@@ -4,6 +4,7 @@ import Swal from 'sweetalert2';
 import axiosSecure from '../../../api/axiosSecure';
 import 'sweetalert2/dist/sweetalert2.min.css';
 import Loader from '../../../components/Loader';
+import { Helmet } from 'react-helmet-async';
 
 const COLORS = ['#1D4ED8', '#10B981', '#F59E0B', '#EF4444']; // Blue, Green, Amber, Red
 
@@ -65,6 +66,11 @@ const Trainers = () => {
   };
 
   return (
+    <>
+     <Helmet>
+        <title>All Trainers</title>
+        <meta name="description" content="Welcome to Login page" />
+      </Helmet>
     <div className="p-6">
       <h2 className="text-4xl font-bold text-center mb-8 text-transparent bg-gradient-to-r from-blue-700 via-green-500 to-yellow-400 bg-clip-text">
         All Trainers
@@ -134,6 +140,7 @@ const Trainers = () => {
         </div>
       )}
     </div>
+    </>
   );
 };
 

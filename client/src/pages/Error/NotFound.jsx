@@ -2,11 +2,17 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Lottie from "lottie-react";
 import errorAnimation from "../../assets/lottie-json/404 error page with cat (1).json"; // adjust path as needed
+import { Helmet } from "react-helmet-async";
 
 const COLORS = ['#1D4ED8', '#10B981', '#F59E0B', '#EF4444'];
 
 const ErrorPage = () => {
   return (
+    <>
+     <Helmet>
+        <title>404 Not Found</title>
+        <meta name="description" content="Welcome to Login page" />
+      </Helmet>
     <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-tr from-red-50 to-yellow-50 px-6">
       <div className="w-64 h-64 mb-8">
         <Lottie animationData={errorAnimation} loop={true} />
@@ -28,6 +34,7 @@ const ErrorPage = () => {
         Go to Home
       </Link>
     </div>
+    </>
   );
 };
 

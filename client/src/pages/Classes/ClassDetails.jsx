@@ -13,6 +13,7 @@ import {
 } from 'react-icons/fa';
 import axiosPublic from '../../api/axiosPublic';
 import Loader from '../../components/Loader';
+import { Helmet } from 'react-helmet-async';
 
 const COLORS = ['#1D4ED8', '#10B981', '#F59E0B', '#EF4444'];
 
@@ -60,7 +61,12 @@ const ClassDetails = () => {
   } = classItem;
 
   return (
-    <div className="px-4 py-10 min-h-screen bg-gray-100">
+    <>
+     <Helmet>
+        <title>Class Details</title>
+        <meta name="description" content="Welcome to Login page" />
+      </Helmet>
+    <div className="px-4 py-16 min-h-screen bg-gray-100">
       <div className="max-w-6xl mx-auto bg-white rounded-3xl shadow-2xl p-8 md:p-12 space-y-12 border border-gray-200">
         
 
@@ -152,6 +158,7 @@ const ClassDetails = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
@@ -160,6 +167,7 @@ const Info = ({ icon, text, color }) => (
     <span className="text-xl" style={{ color }}>{icon}</span>
     <span className="text-sm text-gray-700">{text}</span>
   </div>
+  
 );
 
 export default ClassDetails;

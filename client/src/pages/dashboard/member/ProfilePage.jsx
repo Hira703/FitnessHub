@@ -13,6 +13,7 @@ import { Button, Label, TextInput, Select, Textarea } from "flowbite-react";
 import axiosSecure from "../../../api/axiosSecure";
 import Swal from "sweetalert2";
 import Loader from "../../../components/Loader";
+import { Helmet } from "react-helmet-async";
 
 const COLORS = {
   primary: "#1D4ED8",
@@ -115,6 +116,11 @@ const ProfilePage = () => {
   }
 
   return (
+    <>
+     <Helmet>
+        <title>My Profile</title>
+        <meta name="description" content="Welcome to Login page" />
+      </Helmet>
     <div className="max-w-5xl mx-auto p-4 sm:p-6 lg:p-10 bg-white dark:bg-gray-900 shadow-lg rounded-lg mt-10">
       <h2 className="text-3xl font-bold mb-8 text-center" style={{ color: COLORS.primary }}>
         My Profile
@@ -268,6 +274,7 @@ const ProfilePage = () => {
         </form>
       </div>
     </div>
+    </>
   );
 };
 

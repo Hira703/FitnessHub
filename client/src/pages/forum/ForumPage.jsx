@@ -5,6 +5,7 @@ import { AuthContext } from "../../context/AuthProvider";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 import { ImSpinner2 } from "react-icons/im";
 import Swal from "sweetalert2";
+import { Helmet } from "react-helmet-async";
 
 const fetchForums = async (page) => {
   const res = await axiosSecure.get(`/api/forums?page=${page}&limit=6`);
@@ -77,7 +78,12 @@ const ForumPage = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-12">
+    <>
+     <Helmet>
+        <title>Community Forums</title>
+        <meta name="description" content="Welcome to Login page" />
+      </Helmet>
+    <div className="max-w-6xl mx-auto px-4 py-16">
       <h1 className="text-4xl font-bold text-center mb-12 text-[#1D4ED8]">
         💬 Community Forums
       </h1>
@@ -167,6 +173,7 @@ const ForumPage = () => {
         </div>
       )}
     </div>
+    </>
   );
 };
 

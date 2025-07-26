@@ -5,6 +5,7 @@ import { AuthContext } from "../../../context/AuthProvider";
 import Swal from "sweetalert2";
 import axiosSecure from "../../../api/axiosSecure";
 import Loader from "../../../components/Loader";
+import { Helmet } from "react-helmet-async";
 
 const AddNewSlot = () => {
   const { backendUser } = useContext(AuthContext);
@@ -139,6 +140,11 @@ const AddNewSlot = () => {
 
 
   return (
+    <>
+     <Helmet>
+        <title>Add New Slot</title>
+        <meta name="description" content="Welcome to Login page" />
+      </Helmet>
     <div className="max-w-5xl mx-auto p-6 bg-white dark:bg-gray-900 rounded-lg shadow-lg mt-6">
       <h2 className="text-3xl font-bold text-center text-blue-600 dark:text-blue-400 mb-8">
         🕒 Add New Slot
@@ -298,6 +304,7 @@ const AddNewSlot = () => {
         </p>
       )}
     </div>
+    </>
   );
 };
 

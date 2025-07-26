@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axiosSecure from "../../../api/axiosSecure";
 import Swal from "sweetalert2";
+import { Helmet } from "react-helmet-async";
 
 const CreateCoupon = () => {
   const [code, setCode] = useState("");
@@ -59,6 +60,11 @@ const CreateCoupon = () => {
     "w-full px-4 py-3 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 transition";
 
   return (
+    <>
+     <Helmet>
+        <title>Create New Coupon</title>
+        <meta name="description" content="Welcome to Login page" />
+      </Helmet>
     <div className="max-w-xl mx-auto p-8 bg-white shadow-xl rounded-xl dark:bg-gray-900 transition-all duration-300">
       <h2 className="text-3xl font-extrabold mb-8 text-[#1D4ED8] text-center select-none">
         Create New Coupon
@@ -138,6 +144,7 @@ const CreateCoupon = () => {
         </button>
       </form>
     </div>
+    </>
   );
 };
 

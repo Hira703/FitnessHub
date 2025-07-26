@@ -3,6 +3,7 @@ import axiosSecure from "../../../api/axiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
 import Loader from "../../../components/Loader";
+import { Helmet } from "react-helmet-async";
 
 const COLORS = ["#1D4ED8", "#10B981", "#F59E0B", "#EF4444"];
 
@@ -76,6 +77,11 @@ export default function AdminBalancePage() {
   ];
 
   return (
+    <>
+     <Helmet>
+        <title>Admin | Dashboard</title>
+        <meta name="description" content="Welcome to Login page" />
+      </Helmet>
     <main className="max-w-7xl mx-auto px-4 py-10 bg-gradient-to-tr from-blue-50 to-red-50 min-h-screen">
       {/* Title */}
       <h1 className="text-4xl font-extrabold mb-8 text-center text-[#1D4ED8] drop-shadow">
@@ -160,5 +166,6 @@ export default function AdminBalancePage() {
         </div>
       </section>
     </main>
+    </>
   );
 }

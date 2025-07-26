@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axiosSecure from '../../../api/axiosSecure';
 import axiosPublic from '../../../api/axiosPublic';
+import { Helmet } from 'react-helmet-async';
 
 const skillOptions = [
   { value: 'yoga', label: 'Yoga' },
@@ -129,6 +130,11 @@ const CreateClassForm = () => {
   };
 
   return (
+    <>
+     <Helmet>
+        <title>Fitness Club | Add New Class</title>
+        <meta name="description" content="Welcome to Login page" />
+      </Helmet>
     <div className="max-w-5xl mx-auto p-6 sm:p-10 bg-white rounded-2xl shadow-md border border-gray-200">
       <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">Add New Class</h2>
 
@@ -313,6 +319,7 @@ const CreateClassForm = () => {
         </div>
       </form>
     </div>
+    </>
   );
 };
 

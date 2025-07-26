@@ -6,6 +6,7 @@ import { FaStar, FaCalendarAlt, FaDumbbell } from "react-icons/fa";
 import ReviewModal from "../../../components/ReviewModal";
 import Loader from "../../../components/Loader";
 import ChatBox from "../../../components/ChatBox";
+import { Helmet } from "react-helmet-async";
 
 const COLORS = ['#1D4ED8', '#10B981', '#F59E0B', '#EF4444'];
 
@@ -59,6 +60,11 @@ const BookedTrainer = () => {
   const defaultImage = "https://i.ibb.co/fD1S9m6/default-user.png";
 
   return (
+    <>
+     <Helmet>
+        <title>Booked Trainers</title>
+        <meta name="description" content="Welcome to Login page" />
+      </Helmet>
     <div className="max-w-7xl mx-auto px-4 py-12">
       <h2
         className="text-4xl font-extrabold text-center mb-12"
@@ -230,6 +236,7 @@ const BookedTrainer = () => {
         />
       )}
     </div>
+    </>
   );
 };
 

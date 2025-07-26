@@ -10,6 +10,7 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../../context/AuthProvider";
 import axiosSecure from "../../../api/axiosSecure";
 import Loader from "../../../components/Loader";
+import { Helmet } from "react-helmet-async";
 
 // Custom color palette
 const COLORS = ["#1D4ED8", "#10B981", "#F59E0B", "#EF4444"];
@@ -71,6 +72,11 @@ const MemberHome = () => {
   } = stats;
 
   return (
+    <>
+     <Helmet>
+        <title>Member Home</title>
+        <meta name="description" content="Welcome to Login page" />
+      </Helmet>
     <div className="min-h-screen p-4 sm:p-6 bg-gray-50">
       <h2 className="text-3xl sm:text-4xl font-extrabold text-center mb-10 text-gray-800">
         Welcome back,{" "}
@@ -126,6 +132,7 @@ const MemberHome = () => {
         Keep logging your workouts and showing up consistently to achieve your goals! 💪
       </div>
     </div>
+    </>
   );
 };
 
@@ -141,6 +148,7 @@ const StatCard = ({ icon, label, value, color }) => {
         <p className="text-2xl font-bold text-gray-900">{value}</p>
       </div>
     </div>
+    
   );
 };
 

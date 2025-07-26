@@ -68,7 +68,7 @@ const AllTrainers = () => {
         <title>Trainers</title>
         <meta name="description" content="Welcome to Trainers page" />
       </Helmet>
-    <div className="max-w-7xl mx-auto px-4 py-12">
+    <div className="max-w-7xl mx-auto px-4 py-16">
       <h1
         className="text-4xl font-extrabold text-center mb-12"
         style={{ color: COLORS[0] }}

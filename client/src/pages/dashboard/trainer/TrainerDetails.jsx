@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 import axiosSecure from "../../../api/axiosSecure";
 import Loader from "../../../components/Loader";
 import TrainerCalendar from "../../../components/TrainerCalendar";
+import { Helmet } from "react-helmet-async";
 
 const COLORS = ['#1D4ED8', '#10B981', '#F59E0B', '#EF4444'];
 
@@ -79,6 +80,11 @@ const TrainerDetails = () => {
   }
 
   return (
+    <>
+     <Helmet>
+        <title>Trainer Details</title>
+        <meta name="description" content="Welcome to Login page" />
+      </Helmet>
     <main className="max-w-6xl mx-auto p-6 sm:p-10 font-sans text-gray-900">
       {/* Trainer Header */}
       <section className="flex flex-col md:flex-row items-center md:items-start gap-10 bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
@@ -262,6 +268,7 @@ const TrainerDetails = () => {
         )}
       </section>
     </main>
+    </>
   );
 };
 

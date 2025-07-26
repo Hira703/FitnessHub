@@ -6,6 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 import axiosSecure from '../../api/axiosSecure'; 
 import axiosPublic from '../../api/axiosPublic';
 import Loader from '../../components/Loader';
+import { Helmet } from 'react-helmet-async';
 
 const COLORS = ['#1D4ED8', '#10B981', '#F59E0B', '#EF4444'];
 
@@ -52,7 +53,12 @@ const AllClasses = () => {
     setPage(1);
   };
   return (
-    <div className="container mx-auto px-4 py-10">
+    <>
+     <Helmet>
+        <title>All Classes</title>
+        <meta name="description" content="Welcome to the Fitness Club page" />
+      </Helmet>
+    <div className="container mx-auto px-4 py-16">
       <h1 className="text-4xl font-bold text-center mb-10 text-[#1D4ED8]">Explore All Classes</h1>
 
       {/* Filters & Search */}
@@ -165,6 +171,7 @@ const AllClasses = () => {
         </>
       )}
     </div>
+    </>
   );
 };
 

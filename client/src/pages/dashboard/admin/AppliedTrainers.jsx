@@ -6,6 +6,7 @@ import axiosSecure from "../../../api/axiosSecure";
 import Swal from "sweetalert2";
 import 'sweetalert2/dist/sweetalert2.min.css';
 import Loader from "../../../components/Loader";
+import { Helmet } from "react-helmet-async";
 
 // Fetch pending trainers
 const fetchPendingTrainers = async () => {
@@ -66,6 +67,12 @@ const AppliedTrainers = () => {
   };
 
   return (
+    <>
+     <Helmet>
+        <title>Pending Trainer Applications</title>
+        <meta name="description" content="Welcome to Login page" />
+      </Helmet>
+      
     <div className="p-6 max-w-6xl mx-auto">
       <h2 className="text-3xl font-bold text-center text-blue-700 mb-8">
         Pending Trainer Applications
@@ -170,6 +177,7 @@ const AppliedTrainers = () => {
         </div>
       )}
     </div>
+    </>
   );
 };
 

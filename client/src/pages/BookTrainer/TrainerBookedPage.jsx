@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import { FaUser, FaClock, FaCheckCircle } from "react-icons/fa";
 import axiosSecure from "../../api/axiosSecure"; // Adjust path as needed
 import Loader from "../../components/Loader";
+import { Helmet } from "react-helmet-async";
 
 const TrainerBookedPage = () => {
   const { id } = useParams();
@@ -169,6 +170,11 @@ const TrainerBookedPage = () => {
   }
    
   return (
+    <>
+     <Helmet>
+        <title>Book Trainer</title>
+        <meta name="description" content="Welcome to our Book Trainer page" />
+      </Helmet>
     <div className="max-w-6xl mx-auto px-4 py-10 space-y-10">
       {/* Trainer and Slot Info */}
       <div className="bg-gradient-to-r from-indigo-500 to-blue-600 text-white p-6 rounded-xl shadow-lg">
@@ -269,6 +275,7 @@ const TrainerBookedPage = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

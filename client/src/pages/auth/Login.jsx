@@ -64,7 +64,7 @@ const Login = () => {
         <meta name="description" content="Welcome to Login page" />
       </Helmet>
 
-      <div className="min-h-screen bg-gradient-to-r from-blue-100 to-indigo-200 flex items-center justify-center px-4 py-10">
+      <div className="min-h-screen bg-gradient-to-r from-blue-100 to-indigo-200 flex items-center justify-center px-4 py-16">
         <Card className="w-full max-w-md border border-gray-300 shadow-xl rounded-2xl p-6
                         sm:p-8
                         ">
