@@ -16,6 +16,7 @@ const TrainerMessages = () => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const messageEndRef = useRef(null);
+  const [loading, setLoading] = useState(false);
 
   const getConversationId = (memberEmail) => {
     return [backendUser.email, memberEmail].sort().join("__");
@@ -27,6 +28,7 @@ const TrainerMessages = () => {
       try {
         const res = await axiosSecure.get(`/api/payments/trainer/booked-members/${backendUser?.email}`);
         setMembers(res.data);
+       
       } catch (error) {
         console.error("Error fetching members", error);
       }

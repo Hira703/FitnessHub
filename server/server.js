@@ -43,7 +43,7 @@ app.use("/api/newsletter", require("./routes/newsletterRoutes"));
 app.use("/api/messages", require("./routes/messageRoutes"));
 app.use("/api/coupons", require("./routes/couponRoutes"));
 
-// Test route
+
 app.get("/", (req, res) => {
   res.send("💪 Fitness Tracker Backend Running");
 });
