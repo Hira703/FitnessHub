@@ -3,12 +3,10 @@ const admin = require("firebase-admin");
 let serviceAccount;
 
 if (process.env.FB_SERVICE_KEY) {
-  // Decode base64 environment variable into JSON
-  serviceAccount = JSON.parse(
-    Buffer.from(process.env.FB_SERVICE_KEY, "base64").toString("utf-8")
-  );
+  // Directly parse the JSON string from the env variable
+  serviceAccount = JSON.parse(process.env.FB_SERVICE_KEY);
 } else {
-  // fallback for local dev
+  // Fallback for local development using the JSON file
   serviceAccount = require("../firebase-admin.json");
 }
 
