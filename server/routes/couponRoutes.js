@@ -3,7 +3,7 @@ const express = require("express");
 const router = express.Router();
 const verifyAdmin = require("../middlewares/verifyToken");
 
-const { getAllCoupons, deleteCoupon, validateCoupon, createCoupon } = require("../controllers/CouponController");
+const { getAllCoupons, deleteCoupon, validateCoupon, createCoupon } = require("../controllers/couponController");
 
 // @route   POST /api/admin/create-coupon
 // @desc    Admin creates a coupon

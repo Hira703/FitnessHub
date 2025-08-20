@@ -8,97 +8,91 @@ import {
   updateProfile,
   GoogleAuthProvider,
 } from "firebase/auth";
-import { auth } from "../firebase/firebase.config"; // your firebase config
-import axiosSecure from "../api/axiosSecure"; // your axiosSecure instance
+import { auth } from "../firebase/firebase.config";
 import axiosPublic from "../api/axiosPublic";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import axiosSecure from "../api/axiosSecure";
 
 export const AuthContext = createContext();
 
+const fetchUserRole = async (email) => {
+  const encodedEmail = encodeURIComponent(email);
+  const { data } = await axiosSecure.get(`/api/users/${encodedEmail}`);
+  return data; // should include role
+};
+
 const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null); // will store Firebase user + backend role
-  const [backendUser, setBackendUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null); // Firebase user
+  const [firebaseLoading, setFirebaseLoading] = useState(true);
+  const [email, setEmail] = useState(null);
+  const queryClient = useQueryClient();
   const googleProvider = new GoogleAuthProvider();
 
-  // Register
+  // 🔁 Observe Firebase login state
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (loggedUser) => {
+      if (loggedUser?.email) {
+        setUser(loggedUser);
+        setEmail(loggedUser.email); // trigger useQuery
+      } else {
+        setUser(null);
+        setEmail(null);
+        queryClient.removeQueries(["backendUser"]);
+      }
+      setFirebaseLoading(false);
+    });
+    return () => unsubscribe();
+  }, [queryClient]);
+
+  // ⏳ Fetch backend user with TanStack Query
+  const {
+    data: backendUser,
+    isPending: backendLoading,
+    refetch,
+  } = useQuery({
+    queryKey: ["backendUser", email],
+    queryFn: () => fetchUserRole(email),
+    enabled: !!email, // only run when email is set
+    staleTime: 1000 * 60 * 5, // optional: cache for 5 minutes
+  });
+
+  // ⏳ Combined loading state
+  const loading = firebaseLoading || backendLoading;
+
   const registerUser = (email, password) => {
-    setLoading(true);
+    setFirebaseLoading(true);
     return createUserWithEmailAndPassword(auth, email, password);
   };
 
-  // Login
   const loginUser = (email, password) => {
-    setLoading(true);
+    setFirebaseLoading(true);
     return signInWithEmailAndPassword(auth, email, password);
   };
 
-  // Update profile
   const updateUserProfile = (displayName, photoURL) => {
-    return updateProfile(auth.currentUser, {
-      displayName,
-      photoURL,
-    });
+    return updateProfile(auth.currentUser, { displayName, photoURL });
   };
 
-  // Google login
   const loginWithGoogle = () => {
-    setLoading(true);
+    setFirebaseLoading(true);
     return signInWithPopup(auth, googleProvider);
   };
 
-  // Logout
-  const logoutUser = () => {
-    setLoading(true);
-    return signOut(auth);
+  const logoutUser = async () => {
+    await signOut(auth);
+    queryClient.removeQueries(["backendUser"]);
   };
-
-  // Fetch user info from backend using email with axiosSecure
-  const fetchUserRole = async (email) => {
-    try {
-      const response = await axiosPublic.get(`/api/users/${email}`); // Adjust path accordingly
-      setBackendUser(response.data);
-      return response.data; // should contain role, name, photoURL etc.
-    } catch (error) {
-      console.error("Error fetching user role:", error);
-      setBackendUser(null);
-      return null;
-    }
-  };
-  // console.log(backendUser);
-
-  // Observer for Firebase auth state change
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (loggedUser) => {
-      if (loggedUser?.email) {
-        // Fetch additional user info from backend (role etc.)
-        const backendUser = await fetchUserRole(loggedUser.email);
-
-        if (backendUser) {
-          // Merge Firebase user and backend user info (role)
-          setUser({ ...loggedUser, role: backendUser.role || "member" });
-        } else {
-          // Fallback if backend user not found
-          setUser({ ...loggedUser, role: "member" });
-        }
-      } else {
-        setUser(null);
-        setBackendUser(null);
-      }
-      setLoading(false);
-    });
-
-    return () => unsubscribe();
-  }, []);
 
   const authInfo = {
+    user: user ? { ...user, role: backendUser?.role || "member" } : null,
     backendUser,
-    user,
     loading,
     registerUser,
     loginUser,
     logoutUser,
     loginWithGoogle,
     updateUserProfile,
+    refetchBackendUser: refetch, // manually trigger refetch if needed
   };
 
   return (

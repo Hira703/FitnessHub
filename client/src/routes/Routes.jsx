@@ -2,8 +2,8 @@ import { createBrowserRouter } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
 import NotFound from "../pages/Error/NotFound";
 import Home from "../pages/Home/Home";
-import Register from "../pages/auth/Register";
-
+import Register from "../pages/Auth/Register";
+import Login from "../pages/Auth/Login";
 import DashboardLayout from "../layouts/DashboardLayout";
 import PrivateRoute from "../components/PrivateRoute";
 import AdminHome from "../pages/dashboard/admin/AdminHome";
@@ -29,10 +29,7 @@ import ForumPage from "../pages/forum/ForumPage";
 import Trainers from "../pages/dashboard/admin/Trainers";
 import AdminBalancePage from "../pages/dashboard/admin/AdminBalancePage";
 import AllSubscribers from "../pages/dashboard/admin/AllSubscribers";
-import Login from "../pages/auth/Login";
 import ManageClasses from "../pages/dashboard/admin/ManageClasses";
-import TrainerMessages from "../pages/dashboard/trainer/TrainerMessages";
-import CreateCoupon from "../pages/dashboard/admin/CreateCoupon";
 
 
 const router = createBrowserRouter([
@@ -50,8 +47,7 @@ const router = createBrowserRouter([
             },
             {
                 path: "/login",
-                element:<Login></Login>
-                
+                element: <Login />
             },
             {
                 path: "/all-classes",
@@ -146,10 +142,6 @@ const router = createBrowserRouter([
                     {
                         path:"manage-classes",
                         element:<ManageClasses></ManageClasses>
-                    },
-                    {
-                        path:"coupons",
-                        element:<CreateCoupon></CreateCoupon>
                     }
 
                 ]
@@ -173,10 +165,6 @@ const router = createBrowserRouter([
                         path: "add-forum",
                         element: <AddForum></AddForum>
                     },
-                    {
-                        path:"messages",
-                        element:<TrainerMessages></TrainerMessages>
-                    }
 
 
                 ]

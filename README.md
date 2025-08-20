@@ -5,7 +5,7 @@ FitNexus is a role-based fitness coaching platform designed to connect members w
 ## 🚀 Live Links
 
 - **Client (React + Tailwind CSS + DaisyUI):** [Client Site Link](https://fitness-tracker-app-d0923.web.app)
-- **Server (Node.js + Express + MongoDB):** [Server Site Link](http://localhost:5000/)
+- **Server (Node.js + Express + MongoDB):** [Server Site Link](https://server-murex-rho-32.vercel.app/)
 
 ---
 

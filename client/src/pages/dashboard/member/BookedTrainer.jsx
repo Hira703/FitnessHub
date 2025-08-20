@@ -4,11 +4,6 @@ import { AuthContext } from "../../../context/AuthProvider";
 import axiosSecure from "../../../api/axiosSecure";
 import { FaStar, FaCalendarAlt, FaDumbbell } from "react-icons/fa";
 import ReviewModal from "../../../components/ReviewModal";
-import Loader from "../../../components/Loader";
-import ChatBox from "../../../components/ChatBox";
-import { Helmet } from "react-helmet-async";
-
-const COLORS = ['#1D4ED8', '#10B981', '#F59E0B', '#EF4444'];
 
 const fetchBookings = async (email) => {
   const res = await axiosSecure.get(`/api/payments/details/${email}`);
@@ -19,14 +14,13 @@ const BookedTrainer = () => {
   const { backendUser } = useContext(AuthContext);
   const [reviewModalOpen, setReviewModalOpen] = useState(false);
   const [reviewTrainerId, setReviewTrainerId] = useState(null);
-  const [chatTrainerId, setChatTrainerId] = useState(null);
 
   const {
     data: bookings = [],
     isLoading,
     isError,
     error,
-    refetch,
+    refetch, // <-- get refetch function here
   } = useQuery({
     queryKey: ["bookings", backendUser?.email],
     queryFn: () => fetchBookings(backendUser.email),
@@ -38,10 +32,11 @@ const BookedTrainer = () => {
     setReviewModalOpen(true);
   };
 
+  // New handler for when a review is submitted successfully
   const handleReviewSubmitted = () => {
     setReviewModalOpen(false);
     setReviewTrainerId(null);
-    refetch();
+    refetch(); // Refetch bookings so reviews update immediately
   };
 
   const closeReviewModal = () => {
@@ -49,49 +44,27 @@ const BookedTrainer = () => {
     setReviewTrainerId(null);
   };
 
-  const toggleChatBox = (trainerId) => {
-    if (chatTrainerId === trainerId) {
-      setChatTrainerId(null);
-    } else {
-      setChatTrainerId(trainerId);
-    }
-  };
-
   const defaultImage = "https://i.ibb.co/fD1S9m6/default-user.png";
 
   return (
-    <>
-     <Helmet>
-        <title>Booked Trainers</title>
-        <meta name="description" content="Welcome to Login page" />
-      </Helmet>
-    <div className="max-w-7xl mx-auto px-4 py-12">
-      <h2
-        className="text-4xl font-extrabold text-center mb-12"
-        style={{ color: COLORS[0] }}
-      >
+    <div className="max-w-6xl mx-auto px-4 py-10">
+      <h2 className="text-3xl font-bold text-center text-primary-dark dark:text-primary-light mb-10">
         Your Booked Trainers
       </h2>
 
       {isLoading ? (
-        <div className="flex justify-center items-center h-72 sm:h-96">
-          <Loader />
-        </div>
+        <p className="text-center text-gray-600">Loading bookings...</p>
       ) : isError ? (
-        <p className="text-center text-red-600 text-lg font-semibold">
-          Error: {error.message}
-        </p>
+        <p className="text-center text-red-500">Error: {error.message}</p>
       ) : bookings.length === 0 ? (
-        <div className="text-center text-gray-700 dark:text-gray-300 space-y-2">
-          <p className="text-xl font-semibold">
-            You haven't booked any trainers yet.
-          </p>
-          <p className="text-md">
+        <div className="text-center text-gray-600 dark:text-gray-400">
+          <p className="text-lg font-semibold">You haven't booked any trainers yet.</p>
+          <p className="text-sm mt-2">
             Browse our trainers and book your first session today!
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {bookings.map((booking) => {
             const trainer = booking.trainer;
             const bookedClass = booking.class;
@@ -106,14 +79,11 @@ const BookedTrainer = () => {
             return (
               <div
                 key={booking._id}
-                className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-lg hover:shadow-2xl transition-shadow duration-300 flex flex-col"
+                className="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 shadow-sm hover:shadow-md transition duration-300 overflow-hidden"
               >
-                {/* Trainer Info */}
-                <div className="flex flex-col sm:flex-row items-center p-6 gap-6 border-b border-gray-100 dark:border-gray-800">
-                  <div
-                    className="w-28 h-28 rounded-full overflow-hidden border-4"
-                    style={{ borderColor: COLORS[0] }}
-                  >
+                {/* Top Image & Trainer Info */}
+                <div className="flex flex-col sm:flex-row items-center p-6 gap-6">
+                  <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-primary-base shadow-sm">
                     <img
                       src={trainer?.profileImageUrl || defaultImage}
                       alt={trainer?.fullName || "Trainer"}
@@ -126,16 +96,13 @@ const BookedTrainer = () => {
                   </div>
 
                   <div className="flex-1 text-center sm:text-left">
-                    <h3
-                      className="text-2xl font-bold"
-                      style={{ color: COLORS[0] }}
-                    >
+                    <h3 className="text-xl font-semibold text-primary-base dark:text-primary-light">
                       {trainer?.fullName || "Trainer Name"}
                     </h3>
-                    <p className="text-sm mt-2 text-gray-600 dark:text-gray-400 italic">
+                    <p className="text-sm mt-1 text-gray-700 dark:text-gray-400">
                       {trainer?.otherInfo || "No additional info available."}
                     </p>
-                    <div className="flex items-center justify-center sm:justify-start mt-3 text-yellow-400">
+                    <div className="flex items-center justify-center sm:justify-start mt-2 text-yellow-400">
                       {[...Array(5)].map((_, i) => (
                         <FaStar
                           key={i}
@@ -144,10 +111,9 @@ const BookedTrainer = () => {
                               ? "text-yellow-400"
                               : "text-yellow-200 dark:text-yellow-600"
                           }
-                          size={18}
                         />
                       ))}
-                      <span className="ml-2 text-sm text-gray-500 dark:text-gray-300 font-semibold">
+                      <span className="ml-2 text-sm text-gray-500 dark:text-gray-300">
                         ({averageRating.toFixed(1)})
                       </span>
                     </div>
@@ -155,34 +121,24 @@ const BookedTrainer = () => {
                 </div>
 
                 {/* Class & Slot Details */}
-                <div className="px-8 py-6 flex flex-col gap-4 flex-grow">
-                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center text-gray-800 dark:text-gray-300 font-medium text-lg gap-3 sm:gap-0">
+                <div className="px-6 pb-6">
+                  <div className="flex flex-col gap-2 text-sm text-gray-800 dark:text-gray-300">
                     <div className="flex items-center gap-2">
-                      <FaDumbbell
-                        size={20}
-                        className="text-[var(--primary-color)]"
-                        style={{ color: COLORS[1] }}
-                      />
+                      <FaDumbbell className="text-primary-base dark:text-primary-light" />
                       <span>
                         <strong>Class:</strong> {bookedClass?.className || "N/A"}
                       </span>
                     </div>
 
-                    <div className="flex items-start gap-2 max-w-xs sm:max-w-md">
-                      <FaCalendarAlt
-                        size={20}
-                        className="text-[var(--secondary-color)] mt-1"
-                        style={{ color: COLORS[2] }}
-                      />
-                      <span className="break-words">
+                    <div className="flex items-start gap-2">
+                      <FaCalendarAlt className="text-secondary-base dark:text-secondary-light mt-1" />
+                      <span>
                         <strong>Slots:</strong>{" "}
                         {bookedSlots.length > 0
                           ? bookedSlots
                               .map(
                                 (slot) =>
-                                  `${slot.slotName || "Slot"} at ${
-                                    slot.slotTime || ""
-                                  }`
+                                  `${slot.slotName || "Slot"} at ${slot.slotTime || ""}`
                               )
                               .join(", ")
                           : "N/A"}
@@ -190,34 +146,14 @@ const BookedTrainer = () => {
                     </div>
                   </div>
 
-                  {/* Buttons */}
-                  <div className="mt-auto flex flex-col sm:flex-row gap-4 justify-between">
+                  <div className="mt-5 text-center sm:text-right">
                     <button
                       onClick={() => openReviewModal(trainer?._id)}
-                      className="w-full sm:w-auto px-6 py-2 rounded-lg font-semibold shadow-md text-white transition-transform transform hover:scale-105"
-                      style={{ backgroundColor: COLORS[0] }}
+                      className="bg-primary-base hover:bg-primary-dark text-blue-600 px-5 py-2 rounded-lg text-sm shadow-md transition-colors duration-200"
                     >
                       Leave a Review
                     </button>
-
-                    <button
-                      onClick={() => toggleChatBox(trainer?.email)}
-                      className="w-full sm:w-auto px-6 py-2 rounded-lg font-semibold shadow-md text-white transition-transform transform hover:scale-105"
-                      style={{ backgroundColor: COLORS[1] }}
-                    >
-                      {chatTrainerId === trainer?.email ? "Close Chat" : "Chat"}
-                    </button>
                   </div>
-
-                  {/* Chat Box */}
-                  {chatTrainerId === trainer?.email && (
-                    <div className="mt-6 border border-gray-300 dark:border-gray-700 rounded-lg shadow-inner overflow-hidden">
-                      <ChatBox
-                        receiverEmail={trainer.email}
-                        senderEmail={backendUser.email}
-                      />
-                    </div>
-                  )}
                 </div>
               </div>
             );
@@ -230,13 +166,12 @@ const BookedTrainer = () => {
         <ReviewModal
           isOpen={reviewModalOpen}
           onClose={closeReviewModal}
-          onReviewSubmitted={handleReviewSubmitted}
+          onReviewSubmitted={handleReviewSubmitted} // <-- pass this callback to modal
           trainerId={reviewTrainerId}
           memberId={backendUser._id}
         />
       )}
     </div>
-    </>
   );
 };
 

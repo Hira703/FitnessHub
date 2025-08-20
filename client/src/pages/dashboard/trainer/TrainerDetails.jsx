@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 
 import axiosSecure from "../../../api/axiosSecure";
 import Loader from "../../../components/Loader";
-import TrainerCalendar from "../../../components/TrainerCalendar";
+import TrainerCalendar from "../../../components/TrainerCalender";
 import { Helmet } from "react-helmet-async";
 
 const COLORS = ['#1D4ED8', '#10B981', '#F59E0B', '#EF4444'];
