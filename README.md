@@ -191,6 +191,9 @@ VITE_CLOUDINARY_CLOUD_NAME=your_name
 VITE_STRIPE_PUBLISHABLE_KEY=your_stripe_key
 JWT_SECRET=your_jwt_secret
 MONGODB_URI=your_mongodb_uri
+# Admin credentials
+ADMIN_EMAIL=admin@example.com
+ADMIN_PASSWORD=Admin@123456
 ```
 📦 Installation & Run Locally
 
